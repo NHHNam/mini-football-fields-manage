@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Dec 09, 2021 at 05:35 PM
+-- Generation Time: Dec 12, 2021 at 11:10 AM
 -- Server version: 10.4.21-MariaDB
 -- PHP Version: 8.0.12
 
@@ -51,8 +51,19 @@ CREATE TABLE `giohang` (
   `id` int(11) NOT NULL,
   `username_khachhang` varchar(50) NOT NULL,
   `maSan` varchar(10) NOT NULL,
+  `ngaydat` date NOT NULL,
+  `giodat` time NOT NULL,
+  `thoigian` int(11) NOT NULL,
   `ngayLap` date NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `giohang`
+--
+
+INSERT INTO `giohang` (`id`, `username_khachhang`, `maSan`, `ngaydat`, `giodat`, `thoigian`, `ngayLap`) VALUES
+(4, 'ngoctran', 'sanBTD', '2021-12-13', '19:00:00', 45, '2021-12-12'),
+(7, 'hoainam', 'sanTN', '2021-12-14', '17:05:00', 15, '2021-12-12');
 
 -- --------------------------------------------------------
 
@@ -74,24 +85,7 @@ CREATE TABLE `khachhang` (
 
 INSERT INTO `khachhang` (`id`, `name`, `username`, `password`, `image`) VALUES
 (1, 'Hoài Nam', 'hoainam', '123', 'images/1.jpg'),
-(2, 'Ngọc Trân', 'ngoctran', '123', 'images/5.jpg');
-
--- --------------------------------------------------------
-
---
--- Table structure for table `nhanvien`
---
-
-CREATE TABLE `nhanvien` (
-  `id` int(11) NOT NULL,
-  `name` varchar(50) NOT NULL,
-  `username` varchar(50) NOT NULL,
-  `password` varchar(50) NOT NULL,
-  `ngaysinh` date NOT NULL,
-  `address` varchar(50) NOT NULL,
-  `maPB` varchar(10) NOT NULL,
-  `image` varchar(50) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+(3, 'Lê Ngọc Trân', 'ngoctran', '1234', 'images/42fe704235a61f2a58060cc0ff8f95d7.JPG');
 
 -- --------------------------------------------------------
 
@@ -112,12 +106,10 @@ CREATE TABLE `sanbong` (
 --
 
 INSERT INTO `sanbong` (`id`, `maSan`, `tenSan`, `giaSan`, `imageSan`) VALUES
-(1, 'san1', 'Sân bóng đá Mini cỏ nhân tạo Hồng Bảy', 350000, 'images/sanbong.webp'),
-(2, 'san2', 'Sân Bóng Mini An Kỳ', 350000, 'images/ak.webp'),
-(3, 'san3', 'Sân bóng Bình Minh - Hóc Môn', 350000, 'images/bm.webp'),
-(4, 'san4', 'Sân bóng đá nhân tạo Nhị Bình - Hóc Môn', 350000, 'images/hm.webp'),
-(5, 'san5', 'Sân bóng đá Kaka', 350000, 'images/kk.webp'),
-(6, 'san6', 'Sân bóng Thiện Nhân', 350000, 'images/tn.webp');
+(15, 'sanBTD', 'sân bóng bình trị đông', 3500, 'images/64b1562d3d90a600c742979e9e844203.JPG'),
+(16, 'sanNam', 'sân bóng của Nam', 3000, 'images/3c70e5fde5b13986a2fa98a4d00841e8.JPG'),
+(17, 'sanNu', 'sân bóng của nữ', 3000, 'images/57e7b27431a064135e11f2ecdcdfa54c.JPG'),
+(20, 'sanTN', 'sân bóng Thiện Nhân', 3500, 'images/tn.webp');
 
 --
 -- Indexes for dumped tables
@@ -136,12 +128,6 @@ ALTER TABLE `khachhang`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indexes for table `nhanvien`
---
-ALTER TABLE `nhanvien`
-  ADD PRIMARY KEY (`id`);
-
---
 -- Indexes for table `sanbong`
 --
 ALTER TABLE `sanbong`
@@ -155,25 +141,19 @@ ALTER TABLE `sanbong`
 -- AUTO_INCREMENT for table `giohang`
 --
 ALTER TABLE `giohang`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT for table `khachhang`
 --
 ALTER TABLE `khachhang`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
-
---
--- AUTO_INCREMENT for table `nhanvien`
---
-ALTER TABLE `nhanvien`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `sanbong`
 --
 ALTER TABLE `sanbong`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

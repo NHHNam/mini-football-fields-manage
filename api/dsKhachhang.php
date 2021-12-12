@@ -1,9 +1,9 @@
-<?php 
-    session_start();
-    require_once("../db.php");
-    if(!$_SESSION["username"]){
-        header("Location: login.php");
-    }
+<?php
+session_start();
+require_once("../db.php");
+if(!$_SESSION["username"]){
+    header("Location: login.php");
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -21,68 +21,78 @@
 
 </style>
 <body>
-    <?php 
-        $error = "";
-        $resultGetInfo = get_all_admin($_SESSION['username']);
-        if($resultGetInfo['code'] == 0){
-            $data = $resultGetInfo['data'];
-        }else{
-            $error = $resultGetInfo['message'];
-        }
-    ?>
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
-        <div class="collapse navbar-collapse" id="navbarSupportedContent">
-            <a class="navbar-brand mr-auto" href="../admin.php">Trang Admin</a>
-            <form class="form-inline my-2 my-lg-0">
+<?php
+$error = "";
+$success = "";
+$resultGetInfo = get_all_admin($_SESSION['username']);
+if($resultGetInfo['code'] == 0){
+    $data = $resultGetInfo['data'];
+}else{
+    $error = $resultGetInfo['message'];
+}
+?>
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <a class="navbar-brand mr-auto" href="../admin.php">Trang Admin</a>
+        <form class="form-inline my-2 my-lg-0">
             <div class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                <?=$data['name']?>
+                    <?=$data['name']?>
                 </a>
                 <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                     <a class="dropdown-item" href="../logout.php">Logout</a>
                 </div>
             </div>
-            </form>
-        </div>
-    </nav>
-    <div class="container">
-    <table class="table">
-            <thead>
-                <tr>
-                    <th>Id</th>
-                    <th>Image</th>
-                    <th>Name</th>
-                    <th>Username</th>
-                    <th>Password</th>
-                    <th>Actions</th>
-                </tr>
-            </thead>
-            <tbody id="table-body">
-                <?php 
-                    $result = get_all_user_khachhang();
-                    if($result['code'] == 0){
-                        $dataKhachHang = $result['data'];
-                        foreach($dataKhachHang as $a){
-                        ?>
-                            <tr>
-                                <td><?=$a['id']?></td>
-                                <td><img src="
-                                    <?php 
-                                        echo "../".$a['image'];
-                                    ?>
-                                " style="max-width: 80px;"></td>
-                                <td><?=$a['name']?></td>
-                                <td><?=$a['username']?></td>
-                                <td><?=$a['password']?></td>
-                                <td><a href="">Delete</a> | <a href="">Edit</a></td>
-                            </tr>
-                        <?php
-                        }
-                    }
-                ?>
-
-            </tbody>
-        </table>
+        </form>
     </div>
+</nav>
+<div class="container">
+    <table class="table">
+        <thead>
+        <tr>
+            <th>Id</th>
+            <th>Image</th>
+            <th>Name</th>
+            <th>Username</th>
+            <th>Password</th>
+            <th style="text-align: center;" colspan="2">Actions</th>
+        </tr>
+        </thead>
+        <tbody id="table-body">
+        <?php
+        $result = get_all_user_khachhang();
+        if($result['code'] == 0){
+            $dataKhachHang = $result['data'];
+            foreach($dataKhachHang as $a){
+                ?>
+                <tr>
+                    <td><?=$a['id']?></td>
+                    <td><img src="
+                                    <?php
+                        echo "../".$a['image'];
+                        ?>
+                                " style="max-width: 80px;"></td>
+                    <td><?=$a['name']?></td>
+                    <td><?=$a['username']?></td>
+                    <td><?=$a['password']?></td>
+                    <form action="../editKH.php" method="post">
+                        <input type="hidden" name="id" value="<?=$a['id']?>">
+                        <td style="text-align: center;"><button class="btn btn-success" type="submit">Edit</button></td>
+                    </form>
+
+                    <form action="xoaKH.php" method="post">
+                        <input type="hidden" name="id" value="<?=$a['id']?>">
+                        <td style="text-align: center;"><button class="btn btn-danger" type="submit">Delete</button></td>
+                    </form>
+                </tr>
+                <?php
+            }
+        }
+        ?>
+
+        </tbody>
+    </table>
+    <button class="btn btn-success"><a style="text-decoration: none; color:white;" href="../themKH.php">Thêm KH mới</a></button>
+</div>
 </body>
 </html>

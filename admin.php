@@ -1,9 +1,9 @@
-<?php 
-    session_start();
-    require_once("db.php");
-    if(!$_SESSION["username"]){
-        header("Location: login.php");
-    }
+<?php
+session_start();
+require_once("db.php");
+if(!$_SESSION["username"]){
+    header("Location: login.php");
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -34,34 +34,34 @@
     }
 </style>
 <body>
-    <?php 
-        $error = "";
-        $resultGetInfo = get_all_admin($_SESSION['username']);
-        if($resultGetInfo['code'] == 0){
-            $data = $resultGetInfo['data'];
-        }else{
-            $error = $resultGetInfo['message'];
-        }
-    ?>
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
-        <div class="collapse navbar-collapse" id="navbarSupportedContent">
-            <a class="navbar-brand mr-auto" href="#">Trang Admin</a>
-            <form class="form-inline my-2 my-lg-0">
+<?php
+$error = "";
+$resultGetInfo = get_all_admin($_SESSION['username']);
+if($resultGetInfo['code'] == 0){
+    $data = $resultGetInfo['data'];
+}else{
+    $error = $resultGetInfo['message'];
+}
+?>
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <a class="navbar-brand mr-auto" href="#">Trang Admin</a>
+        <form class="form-inline my-2 my-lg-0">
             <div class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                <img src="<?=$data['image']?>" alt="Anh dai dien" style="max-width: 60px;">
+                    <img src="<?=$data['image']?>" alt="Anh dai dien" style="max-width: 60px;">
                 </a>
                 <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                     <a class="dropdown-item" href="logout.php">Logout</a>
                 </div>
             </div>
-            </form>
-        </div>
-    </nav>
-    <div class="button-setup">
-        <button class="btn btn-danger"><a href="api/dsSanBong.php">Manage SanBong</a></button>
-        <button class="btn btn-danger"><a href="api/dsKhachhang.php">Manage Khachhang</a></button>
-        <button class="btn btn-danger"><a href="">Manage Nhanvien</a></button>
+        </form>
     </div>
+</nav>
+<div class="button-setup">
+    <button class="btn btn-danger"><a href="api/dsSanBong.php">Manage SanBong</a></button>
+    <button class="btn btn-danger"><a href="api/dsKhachhang.php">Manage Khachhang</a></button>
+    <button class="btn btn-danger"><a href="">Manage Nhanvien</a></button>
+</div>
 </body>
 </html>
