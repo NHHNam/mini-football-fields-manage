@@ -29,6 +29,8 @@ $error = "";
     }
     a i{
         font-size: 30px;
+        margin-bottom: 30px;
+        margin-top: 30px;
     }
 
     button.btn a{
@@ -61,8 +63,8 @@ if($resultGetInfo['code'] == 0){
         </form>
     </div>
 </nav>
-<a style="text-decoreation: none;" href="../admin.php"><i class="fas fa-arrow-circle-left"></i></a>
 <div class="container">
+    <a style="text-decoreation: none;" href="../admin.php"><i class="fas fa-arrow-circle-left"></i></a>
     <table class="table">
         <thead>
         <tr>

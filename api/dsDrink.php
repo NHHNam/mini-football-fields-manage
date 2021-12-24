@@ -2,7 +2,7 @@
 session_start();
 require_once("../db.php");
 if(!$_SESSION["username"]){
-    header("Location: login.php");
+    header("Location: ../login.php");
 }
 ?>
 <!DOCTYPE html>
@@ -56,49 +56,49 @@ if($resultGetInfo['code'] == 0){
     <table class="table">
         <thead>
         <tr>
-            <th>Id</th>
+            <th>STT</th>
             <th>Image</th>
             <th>Name</th>
-            <th>Username</th>
-            <th>Password</th>
+            <th>Price</th>
             <th style="text-align: center;" colspan="2">Actions</th>
         </tr>
         </thead>
         <tbody id="table-body">
         <?php
-        $result = get_all_user_khachhang();
+        $result = get_all_drink();
+        $stt = 1;
         if($result['code'] == 0){
-            $dataKhachHang = $result['data'];
-            foreach($dataKhachHang as $a){
+            $dataDrink = $result['data'];
+            foreach($dataDrink as $a){
                 ?>
                 <tr>
-                    <td><?=$a['id']?></td>
+                    <td><?=$stt?></td>
                     <td><img src="
                                     <?php
-                        echo "../".$a['image'];
+                        echo "../".$a['imageDrink'];
                         ?>
                                 " style="max-width: 80px;"></td>
-                    <td><?=$a['name']?></td>
-                    <td><?=$a['username']?></td>
-                    <td><?=$a['password']?></td>
-                    <form action="../editKH.php" method="post">
-                        <input type="hidden" name="id" value="<?=$a['id']?>">
+                    <td><?=$a['nameDrink']?></td>
+                    <td><?=$a['priceDrink']?></td>
+                    <form action="../editDrink.php" method="post">
+                        <input type="hidden" name="maDrink" value="<?=$a['maDrink']?>">
                         <td style="text-align: center;"><button class="btn btn-success" type="submit">Edit</button></td>
                     </form>
 
-                    <form action="xoaKH.php" method="post">
-                        <input type="hidden" name="id" value="<?=$a['id']?>">
+                    <form action="xoaDrink.php" method="post">
+                        <input type="hidden" name="maDrink" value="<?=$a['maDrink']?>">
                         <td style="text-align: center;"><button class="btn btn-danger" type="submit">Delete</button></td>
                     </form>
                 </tr>
                 <?php
+                $stt+=1;
             }
         }
         ?>
 
         </tbody>
     </table>
-    <button class="btn btn-success"><a style="text-decoration: none; color:white;" href="../themKH.php">Thêm Khách Hàng Mới</a></button>
+    <button class="btn btn-success"><a style="text-decoration: none; color:white;" href="../themDrink.php">Thêm nước mới</a></button>
 </div>
 </body>
 </html>

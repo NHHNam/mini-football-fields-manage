@@ -61,54 +61,54 @@ if($resultGetInfo['code'] == 0){
 <?php
 $error = "";
 $success = "";
-if(isset($_POST['addSan'])){
-    $nameSan = $_POST['nameSan'];
-    $maSan = $_POST['maSan'];
-    $priceSan = $_POST['priceSan'];
-    $hinhSan = "images/". $_FILES['hinhSan']['name'];
-    if(move_uploaded_file($_FILES['hinhSan']['tmp_name'], $hinhSan)){
-        $resultAddSan = add_new_san($maSan, $nameSan, $priceSan, $hinhSan);
-        if($resultAddSan['code'] == 0){
-            $success = $resultAddSan['message'];
+if(isset($_POST['addDrink'])){
+    $nameDrink = $_POST['nameDrink'];
+    $maDrink = $_POST['maDrink'];
+    $priceDrink = $_POST['priceDrink'];
+    $hinhDrink = "images/". $_FILES['hinhDrink']['name'];
+    if(move_uploaded_file($_FILES['hinhDrink']['tmp_name'], $hinhDrink)){
+        $resultAdđrink = add_new_drink($maDrink, $nameDrink, $priceDrink, $hinhDrink);
+        if($resultAdđrink['code'] == 0){
+            $success = $resultAdđrink['message'];
         }else{
-            $error = $resultAddSan['message'];
+            $error = $resultAdđrink['message'];
         }
     }
 }
 ?>
 <div class="container">
-    <a style="text-decoreation: none;" href="api/dsSanBong.php"><i class="fas fa-arrow-circle-left"></i></a>
+    <a style="text-decoreation: none;" href="api/dsDrink.php"><i class="fas fa-arrow-circle-left"></i></a>
     <div class="d-flex justify-content-center">
         <div class="card">
             <div class="card-body">
                 <form novalidate method="post" enctype="multipart/form-data">
-                    <h3>Thêm sân bóng mới</h3>
+                    <h3>Thêm nước uống mới</h3>
                     <div class="input-group form-group">
                         <div class="input-group-prepend">
-                            <span class="input-group-text"><i class="fas fa-futbol"></i></i></span>
+                            <span class="input-group-text"><i class="fas fa-file-signature"></i></span>
                         </div>
-                        <input class="input-group-text form-control" type="text" name="nameSan" placeholder="Nhập tên của sân bóng">
+                        <input class="input-group-text form-control" type="text" name="nameDrink" placeholder="Nhập tên của nước uống">
                     </div>
 
                     <div class="input-group form-group">
                         <div class="input-group-prepend">
-                            <span class="input-group-text"><i class="far fa-futbol"></i></span>
+                            <span class="input-group-text"><i class="fas fa-signature"></i></span>
                         </div>
-                        <input class="input-group-text form-control" type="text" name="maSan" placeholder="Nhập mã của sân bóng">
+                        <input class="input-group-text form-control" type="text" name="maDrink" placeholder="Nhập mã của nước">
                     </div>
 
                     <div class="input-group form-group">
                         <div class="input-group-prepend">
                             <span class="input-group-text"><i class="fas fa-money-bill-wave"></i></span>
                         </div>
-                        <input class="input-group-text form-control" type="number" name="priceSan" placeholder="Nhập giá thuê">
+                        <input class="input-group-text form-control" type="number" name="priceDrink" placeholder="Nhập giá bán">
                     </div>
 
                     <div class="input-group form-group">
                         <div class="input-group-prepend">
                             <span class="input-group-text"><i class="fas fa-image"></i></span>
                         </div>
-                        <input class="input-group-text form-control" type="file" name="hinhSan">
+                        <input class="input-group-text form-control" type="file" name="hinhDrink">
                     </div>
                     <p id="errors" style="text-align: center; font-weight: bold; font-size:20px; color: red;">
                         <?php
@@ -120,7 +120,7 @@ if(isset($_POST['addSan'])){
                         ?>
                     </p>
                     <div class="form-group">
-                        <input type="submit" class="btn btn-success  form-control"name="addSan" value="Thêm sân bóng">
+                        <input type="submit" class="btn btn-success form-control"name="addDrink" value="Thêm nước">
                     </div>
                 </form>
             </div>

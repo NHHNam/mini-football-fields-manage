@@ -61,7 +61,8 @@ if($resultGetInfo['code'] == 0){
 <div class="button-setup">
     <button class="btn btn-danger"><a href="api/dsSanBong.php">Manage SanBong</a></button>
     <button class="btn btn-danger"><a href="api/dsKhachhang.php">Manage Khachhang</a></button>
-    <button class="btn btn-danger"><a href="">Manage Nhanvien</a></button>
+    <button class="btn btn-danger"><a href="api/dsNv.php">Manage NhanVien</a></button>
+    <button class="btn btn-danger"><a href="api/dsDrink.php">Manage Drink</a></button>
 </div>
 </body>
 </html>

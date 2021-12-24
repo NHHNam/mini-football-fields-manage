@@ -6,6 +6,10 @@
     }
     $error = "";
     $success = "";
+    $tongThanhToan = 0;
+    $maDon = "Don" . rand(1,10000);
+    $tongTien = $_GET['tongTien'];
+    // echo date("Y/m/d");
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -66,41 +70,38 @@ if(!empty($_SESSION['username'])){
     <?php
 }
 ?>
-<a style="text-decoreation: none;" href="../index.php"><i class="fas fa-arrow-circle-left"></i></a>
+<a style="text-decoreation: none;" href="gioHang.php"><i class="fas fa-arrow-circle-left"></i></a>
 <div class="container">
     <h4>Danh sách sân đặt: </h4>
     <table class="table">
         <thead>
         <tr>
+            <th>STT</th>
             <th>Tên sân đặt</th>
             <th>Ngày đặt</th>
             <th>Giờ đặt</th>
             <th>Thời gian</th>
-            <th>Tổng tiền</th>
-            <th>Actions</th>
         </tr>
         </thead>
         <tbody id="table-body">
         <?php
+            $stt = 1;
             $tongTienSan = 0;
-            $result = get_gio_hang($_SESSION['username']);
+            $result = get_gio_hang_tam($_SESSION['username'], "");
             if($result['code'] == 0){
                 $dataKhachHang = $result['data'];
                 foreach($dataKhachHang as $a){
-                    $tongTienSan += $a['thoigian'] * $a['giaSan'];
                     ?>
                     <tr>
-                        <td><?=$a['tenSan']?></td>
+                        <td><?=$stt?></td>
+                        <td><?=$a['maSan']?></td>
                         <td><?=$a['ngaydat']?></td>
                         <td><?=$a['giodat']?></td>
                         <td><?=$a['thoigian']?></td>
-                        <td><?=product_price($a['thoigian'] * $a['giaSan'])?></td>
-                        <form method="post">
-                            <input type="hidden" name="maSanToDelete" value="<?=$a['maSan']?>">
-                            <td><button class="btn btn-danger" name="del" type="submit">Delete</button></td>
-                        </form>
                     </tr>
                     <?php
+                    update_maDon_san($a['id'], $maDon);
+                    $stt+=1;
                 }
             }else{
                 echo $result['message'];
@@ -112,33 +113,28 @@ if(!empty($_SESSION['username'])){
     <table class="table">
         <thead>
         <tr>
+            <th>STT</th>
             <th>Tên nước</th>
             <th>Số lượng</th>
-            <th>Giá</th>
-            <th>Tổng tiền</th>
-            <th>Actions</th>
         </tr>
         </thead>
         <tbody id="table-body">
         <?php
             $tongDrink = 0;
-            $result1 = get_drink_giohang($_SESSION['username']);
+            $stt1 = 1;
+            $result1 = get_drink_giohang_drink_tam($_SESSION['username'], "");
             if($result1['code'] == 0){
                 $data1 = $result1['data'];
                 foreach($data1 as $a){
-                    $tongDrink += $a['priceDrink'] * $a['soluong'];
                     ?>
                         <tr>
-                            <td><?=$a['nameDrink']?></td>
+                            <td><?=$stt1 ?></td>
+                            <td><?=$a['maDrink']?></td>
                             <td><?=$a['soluong']?></td>
-                            <td><?=$a['priceDrink']?></td>
-                            <td><?=product_price($a['soluong'] * $a['priceDrink'])?></td>
-                            <form method="post">
-                                <input type="hidden" name="maDrinkToDel" value="<?=$a['maDrink']?>" />
-                                <td><button class="btn btn-danger" name="delDrink" type="submit">Delete</button></td>
-                            </form>
                         </tr>
                     <?php
+                    update_maDon_drink($a['id'], $maDon);
+                    $stt1+=1;
                 }
             }else{
                 echo $result1['message'];
@@ -146,39 +142,57 @@ if(!empty($_SESSION['username'])){
         ?>
         </tbody>
     </table>
-    <h4>Tổng tất cả tiền: <?=product_price($tongTienSan + $tongDrink)?></h4>
-    <a class="btn btn-primary" href="hoaDon.php?tongTien=<?=$tongTienSan + $tongDrink?>">Thanh toán</a>
-</div>
+    <h4>Tổng tất cả tiền: <?=product_price($tongTien)?></h4>
+    <div>
 
-<?php
-    if(isset($_POST['del'])){
-        $maSanToDel = $_POST['maSanToDelete'];
-        $result1 = delete_san_gio_hang($maSanToDel);
-        if($result1['code'] == 0){
-            $success = $result1['message'];
-        }else{
-            $error = $result1['message'];
+    <?php 
+        
+        if(isset($_POST['thanhToan'])){
+            $hinhThucThanhToan = $_POST['hinhThucThanhToan'];
+            $tongTien = $_POST['tongTien'];
+            $maKH = $_POST['maKH'];
+            $ngayLap = date("Y/m/d");
+            $status = "Waiting";
+            $maDon = $_POST['maDon'];
+            $result3 = thanh_toan($maKH, $maDon, $hinhThucThanhToan, $tongTien, $ngayLap, $status);
+            if($result3['code'] == 0){
+                $success = $result3['message'];
+                xoa_all_dat_san($maKH);
+                xoa_all_dat_drink($maKH);
+            }else{
+                $error = $result3['message'];
+            }
         }
-    }else if(isset($_POST['delDrink'])){
-        $maDrinkToDel = $_POST['maDrinkToDel'];
-        $result2 = delete_nuoc_giohang($maDrinkToDel);
-        if($result2['code'] == 0){
-            $success = $result2['message'];
-        }else{
-            $error = $result2['message'];
+    ?>
+    <form method="post">
+        <label>Hình thức thanh toán: </label>
+        <select name="hinhThucThanhToan">
+            <option value="Trực tiếp">Trực tiếp</option>
+            <option value="MoMo">MoMo</option>
+            <option value="Thẻ ngân hàng">Thẻ ngân hàng</option>
+        </select>
+        <input type="hidden" name="maDon" value="<?=$maDon?>">
+        <input type="hidden" name="listSan" value="<?=$lSan?>">
+        <input type="hidden" name="listDrink" value="<?=$lDrink?>">
+        <input type="hidden" value="<?=$tongTien?>" name="tongTien">
+        <input type="hidden" value="<?=$_SESSION['username']?>" name="maKH">
+        <input type="submit" class="btn btn-primary form-control" name="thanhToan" value="Thanh toán">
+    </div>
+    </form>
+
+
+
+    <p id="errors" style="text-align: center; font-weight: bold; font-size:20px; color: red;">
+        <?php
+        if(!empty($error)){
+            echo "<div class='alert alert-danger'>$error</div>";
+            $error = "";
+        }else if(!empty($success)){
+            echo "<div class='alert alert-success'>$success</div>";
+            $success = "";
         }
-    }
-?>
-<p id="errors" style="text-align: center; font-weight: bold; font-size:20px; color: red;">
-    <?php
-    if(!empty($error)){
-        echo "<div class='alert alert-danger'>$error</div>";
-        $error = "";
-    }else if(!empty($success)){
-        echo "<div class='alert alert-success'>$success</div>";
-        $success = "";
-    }
     ?>
 </p>
+</div>
 </body>
 </html>

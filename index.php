@@ -2,6 +2,10 @@
 session_start();
 require_once("db.php");
 $resultBanner = get_image_banner();
+$error = "";
+$success = "";
+
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -16,12 +20,16 @@ $resultBanner = get_image_banner();
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-
+    <style>
+        .card a img{
+            max-height: 200px;
+        }
+    </style>
 </head>
 <body>
 <?php
 if(!empty($_SESSION['username'])){
-    $error = "";
+    
     $resultGetInfo = get_all_khachhang($_SESSION['username']);
     if($resultGetInfo['code'] == 0){
         $data = $resultGetInfo['data'];
@@ -38,6 +46,7 @@ if(!empty($_SESSION['username'])){
                         <img src="<?=$data['image']?>" alt="Anh dai dien" style="max-width: 60px;">
                     </a>
                     <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                        <a class="dropdown-item" href="api/xemHoaDon.php">Đơn hàng</a>
                         <a class="dropdown-item" href="api/gioHang.php">Giỏ hàng</a>
                         <a class="dropdown-item" href="logout.php">Logout</a>
                     </div>
@@ -50,7 +59,7 @@ if(!empty($_SESSION['username'])){
     ?>
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
-            <a class="navbar-brand mr-auto" href="#">Trang Admin</a>
+            <a class="navbar-brand mr-auto" href="#">Trang chủ</a>
             <form class="form-inline my-2 my-lg-0">
                 <a class="nav-link" href="login.php">Login</a>
             </form>
@@ -60,18 +69,7 @@ if(!empty($_SESSION['username'])){
 }
 ?>
 <div class="container">
-    <div class="row">
-        <div class="col-lg-3 col-12 col-md-5">
-            <p class="name-app">Quận</p>
-            <div class="category">
-                <ul>
-                    <li class="active">Quận Bình Tân</li>
-                    <li>Quận Tân Phú</li>
-                    <li>Quận 11</li>
-                </ul>
-            </div>
-        </div>
-        <div class="col-lg-9 col-12 col-md-7">
+        <div class="col-lg-12 col-12 col-md-7">
             <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
                 <ol class="carousel-indicators">
                     <li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>
@@ -106,35 +104,49 @@ if(!empty($_SESSION['username'])){
                     <span class="sr-only">Next</span>
                 </a>
             </div>
-
+            </br>
+            
+            </br>
+            <h3>Danh sách các sân hiện có: </h3>
             <div class="row">
                 <?php
-                $resultGetSan = get_all_san();
-                if($resultGetSan['code'] == 0){
-                    $data = $resultGetSan['data'];
-                    foreach($data as $a){
-                        ?>
-                        <div class="col-lg-4 col-12 col-md-6">
-                            <div class="card">
-                                <a href="api/chiTietSan.php?tenSan=<?=$a['tenSan']?>"><img src="<?=$a['imageSan']?>" class="card-img-top" alt="hinh san bong"></a>
-                                <div class="card-body">
-                                    <h5 class="card-title"><?=$a['tenSan']?></h5>
-                                    <p class="card-text"><?=$a['giaSan']?> / phút</p>
+                    $resultGetSan = get_all_san();
+                    if($resultGetSan['code'] == 0){
+                        $data = $resultGetSan['data'];
+                        foreach($data as $a){
+                            ?>
+                            <div class="col-lg-4 col-12 col-md-6">
+                                <div class="card">
+                                    <a href="api/chiTietSan.php?tenSan=<?=$a['tenSan']?>"><img src="<?=$a['imageSan']?>" class="card-img-top" alt="hình sân bóng"></a>
+                                    <div class="card-body">
+                                        <h5 class="card-title"><?=$a['tenSan']?></h5>
+                                        <p class="card-text"><?=product_price($a['giaSan'])?> / phút</p>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                        <?php
+                            <?php
+                        }
+                    }else{
+                        echo $resultGetSan['message'];
                     }
-                }else{
-                    echo $resultGetSan['message'];
-                }
                 ?>
-
-
             </div>
+            
+            
         </div>
     </div>
 </div>
+<p id="errors" style="text-align: center; font-weight: bold; font-size:20px; color: red;">
+    <?php
+    if(!empty($error)){
+        echo "<div class='alert alert-danger'>$error</div>";
+        $error = "";
+    }else if(!empty($success)){
+        echo "<div class='alert alert-success'>$success</div>";
+        $success = "";
+    }
+    ?>
+</p>
 <div class="footer col-lg-12 col-12">
     <p>Quản lý sân bóng đá mini 2021.</p>
 </div>

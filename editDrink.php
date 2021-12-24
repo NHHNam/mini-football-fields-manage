@@ -56,45 +56,43 @@ if($resultGetInfo['code'] == 0){
         </form>
     </div>
 </nav>
-<a style="text-decoreation: none;" href="api/dsKhachhang.php"><i class="fas fa-arrow-circle-left"></i></a>
-<?php
-$idOld = $_POST['id'];
-// $userNameKH = $_POST['userNameKH'];
-$result2 = get_info($idOld);
-if($result2['code'] == 0){
-    $b = $result2['data'];
-}else{
-    $error = $result2['message'];
-}
-if(isset($_POST['suaKH'])){
-    $id = $_POST['id'];
-    $ten = $_POST['ten'];
-    $pwd = $_POST['pwd'];
-    $result1 = update_khachhang($id, $ten, $pwd);
+<a style="text-decoreation: none;" href="api/dsDrink.php"><i class="fas fa-arrow-circle-left"></i></a>
+<?php 
+    $maDrink = $_POST['maDrink'];
+    $result1 = get_info_drink($maDrink);
     if($result1['code'] == 0){
-        $success = $result1['message'];
+        $dataDrink = $result1['data'];
     }else{
         $error = $result1['message'];
     }
-}
-
+    if(isset($_POST['suaDrink'])){
+        $ten = $_POST['ten'];
+        $gia = $_POST['gia'];
+        $maDrink = $_POST['maDrink'];
+        $result2 = update_drink($maDrink, $ten, $gia);
+        if($result2['code'] == 0){
+            header('Location: api/dsDrink.php');
+        }else{
+            $error = $result2['message'];
+        }
+    }
 ?>
 <div class="container">
     <div class="card-body">
         <form method="post" enctype="multipart/form-data">
             <div class="form-group">
-                <input class="input-group" type="hidden" name="id" value="<?=$idOld?>">
+                <input class="input-group" type="hidden" name="maDrink" value="<?=$maDrink?>">
             </div>
             <div class="form-group">
-                <label>Tên khách hàng:</label>
-                <input class="input-group" type="text" value="<?=$b['name']?>" name="ten" required>
+                <label>Tên nước:</label>
+                <input class="input-group" type="text" value="<?=$dataDrink['nameDrink']?>" name="ten" required>
             </div>
             <div class="form-group">
-                <label>Mật khẩu:</label>
-                <input class="input-group" type="password" name="pwd" required>
+                <label>Giá:</label>
+                <input class="input-group" type="number" value="<?=$dataDrink['priceDrink']?>" name="gia" required>
             </div>
             <div class="form-group">
-                <input class="input-group btn btn-success" name="suaKH" value="Sửa Thông Tin" type="submit">
+                <input class="input-group btn btn-success" name="suaDrink" value="Sửa Thông Tin" type="submit">
             </div>
             <div class="form-group">
                 <?php

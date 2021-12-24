@@ -27,6 +27,8 @@ if(!$_SESSION["username"]){
         }
         a i{
             font-size: 30px;
+            margin-bottom: 30px;
+            margin-top: 30px;
         }
     </style>
 </head>
@@ -56,7 +58,7 @@ if($resultGetInfo['code'] == 0){
         </form>
     </div>
 </nav>
-<a style="text-decoreation: none;" href="api/dsKhachhang.php"><i class="fas fa-arrow-circle-left"></i></a>
+
 <?php
     if(isset($_POST['addUser'])){
         $username = $_POST['accountname'];
@@ -73,37 +75,38 @@ if($resultGetInfo['code'] == 0){
     }
 ?>
 <div class="container">
+    <a style="text-decoreation: none;" href="api/dsKhachhang.php"><i class="fas fa-arrow-circle-left"></i></a>
     <div class="d-flex justify-content-center">
         <div class="card">
             <div class="card-body">
                 <form novalidate method="post" enctype="multipart/form-data">
-                    <h3>Thêm nhân viên mới</h3>
+                    <h3>Thêm khách hàng mới</h3>
                     <div class="input-group form-group">
                         <div class="input-group-prepend">
                             <span class="input-group-text"><i class="fas fa-user"></i></span>
                         </div>
-                        <input class="input-group-text" type="text" name="nameKH" placeholder="Enter name of KH">
+                        <input class="input-group-text form-control" type="text" name="nameKH" placeholder="Enter name of KH">
                     </div>
 
                     <div class="input-group form-group">
                         <div class="input-group-prepend">
                             <span class="input-group-text"><i class="fas fa-user-circle"></i></span>
                         </div>
-                        <input class="input-group-text" type="text" name="accountname" placeholder="enter username of KH">
+                        <input class="input-group-text form-control" type="text" name="accountname" placeholder="enter username of KH">
                     </div>
 
                     <div class="input-group form-group">
                         <div class="input-group-prepend">
                             <span class="input-group-text"><i class="fas fa-key"></i></span>
                         </div>
-                        <input class="input-group-text" type="password" name="pwd" placeholder="Enter password of KH">
+                        <input class="input-group-text form-control" type="password" name="pwd" placeholder="Enter password of KH">
                     </div>
 
                     <div class="input-group form-group">
                         <div class="input-group-prepend">
                             <span class="input-group-text"><i class="fas fa-image"></i></span>
                         </div>
-                        <input class="input-group-text" type="file" name="hinhDaiDien">
+                        <input class="input-group-text form-control" type="file" name="hinhDaiDien">
                     </div>
                     <p id="errors" style="text-align: center; font-weight: bold; font-size:20px; color: red;">
                         <?php
@@ -115,7 +118,7 @@ if($resultGetInfo['code'] == 0){
                         ?>
                     </p>
                     <div class="form-group">
-                        <input type="submit" name="addUser" value="Thêm khách hàng">
+                        <input type="submit" class="btn btn-primary form-control" name="addUser" value="Thêm khách hàng">
                     </div>
                 </form>
             </div>

@@ -17,6 +17,8 @@ require_once("db.php");
 <body>
 <?php
 $error = "";
+$checkStaff = "nv";
+
 if(isset($_POST['login'])){
     $accountName = $_POST['accountName'];
     $pwd = $_POST['pwd'];
@@ -26,6 +28,16 @@ if(isset($_POST['login'])){
             $data = $result['data'];
             $_SESSION['username'] = $data['username'];
             header("Location: admin.php");
+            exit();
+        }else{
+            $error = $result['message'];
+        }
+    }else if(strpos($accountName, $checkStaff) !== false){
+        $result = login_staff($accountName, $pwd);
+        if($result['code'] == 0){
+            $data = $result['data'];
+            $_SESSION['username'] = $data['username'];
+            header("Location: nhanVien.php");
             exit();
         }else{
             $error = $result['message'];

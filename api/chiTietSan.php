@@ -43,6 +43,12 @@ $tenSanGet = $_GET['tenSan'];
             text-align: center;
             font-size: 20px;
         }
+        .card {
+            margin-top: 30px;
+        }
+        .card a img{
+            max-height: 200px;
+        }
     </style>
 </head>
 <body>
@@ -65,6 +71,7 @@ if(!empty($_SESSION['username'])){
                         <img src="<?="../".$data['image']?>" style="max-width: 50px;">
                     </a>
                     <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                        <a class="dropdown-item" href="gioHang.php">Giỏ Hàng</a>
                         <a class="dropdown-item" href="../logout.php">Logout</a>
                     </div>
                 </div>
@@ -87,29 +94,38 @@ if(!empty($_SESSION['username'])){
 ?>
 
 <?php
-    if(isset($_POST['datSan'])){
-        if(empty($_SESSION['username'])){
-            $message = "Bạn chưa đăng nhập nên chưa thể vào giỏ hàng";
-            echo "<script type='text/javascript'>alert('$message');</script>";
-        }
-    }
+    $flag = 0;
+    
+    // if($flag == 1){
+    //     header("Location: ../login.php");
+    // }
 ?>
 
 <?php
     $success = "";
     $error = "";
     if(isset($_POST['datSan'])){
-        $username = $_POST['usernameKH'];
-        $maSan = $_POST['maSan'];
-        $ngayDat = $_POST['ngayDat'];
-        $gioDat = $_POST['gioDat'];
-        $ngayLap = $_POST['ngayLap'];
-        $thoigian = $_POST['thoigian'];
-        $resultAdd = add_gio_hang($username, $maSan, $ngayDat, $gioDat, $thoigian,$ngayLap);
-        if($resultAdd['code'] == 0){
-            $success = $resultAdd['message'];
+        if(empty($_SESSION['username'])){
+            $message = "Bạn chưa đăng nhập nên chưa thể vào giỏ hàng. Nên bạn hãy đăng nhập <a href='../login.php'>Đăng nhập</a>";
+            $error = $message;
         }else{
-            $error = $resultAdd['message'];
+            $username = $_POST['usernameKH'];
+            $maSan = $_POST['maSan'];
+            $ngayDat = $_POST['ngayDat'];
+            $gioDat = $_POST['gioDat'];
+            $ngayLap = $_POST['ngayLap'];
+            $thoigian = $_POST['thoigian'];
+            $maDon = "";
+            $resultAdd = add_gio_hang($username, $maSan, $ngayDat, $gioDat, $thoigian,$ngayLap);
+            $resultAdd1 = add_gio_hang_san_tam($maDon, $username, $maSan, $ngayDat, $gioDat, $thoigian,$ngayLap);
+            if($resultAdd1['code'] != 0){
+                echo "Canot add to gio hang san tam";
+            }
+            if($resultAdd['code'] == 0){
+                $success = $resultAdd['message'];
+            }else{
+                $error = $resultAdd['message'];
+            }
         }
     }
 ?>
@@ -167,9 +183,63 @@ if(!empty($_SESSION['username'])){
 
         </div>
     </div>
-</div>
-<div class="footer col-lg-12 col-12">
-    <p>Quản lý sân bóng đá mini 2021.</p>
+    <h3 style="margin-top: 30px;">Danh sách các sản phẩm dùng trong sân: </h3>  
+    <?php 
+        if(isset($_POST['buyDrink']) && isset($_SESSION['username'])){ 
+            // print_r($_POST);
+            $maKH = $_SESSION['username'];
+            $SL = $_POST['SL'];
+            $maDrink = $_POST['maDrink'];
+            $maDon = "";
+            if(check_exist_drink($maDrink)){
+                $resultAddDrink = update_drink_giohang($_SESSION['username'], $maDrink, $SL);
+                update_drink_giohang_tam($_SESSION['username'], $maDrink, $SL);
+            }else{
+                $resultAddDrink = add_drink_into_giohang($maDrink, $maKH, $SL);
+                add_drink_into_giohang_tam($maDon, $maDrink, $maKH, $SL);
+            }
+            if($resultAddDrink['code'] == 0){
+                $success = "Đã thêm nước vào trong giỏ hàng";
+            }else{
+                $error = $resultAddDrink['message'];
+            }
+        }else if(!(isset($_SESSION['username'])) && isset($_POST['buyDrink'])){
+            $error = "Không thể đặt nước vì bạn chưa đăng nhập <a href='login.php'>Đăng nhập</a>";
+        }else{
+            echo "";
+        }
+    ?>
+    <div class="row">
+        <?php
+            $resultGetDrink = get_drink();
+            if($resultGetDrink['code'] == 0){
+                $data = $resultGetDrink['data'];
+                foreach($data as $a){
+                    ?>
+                    <div class="col-lg-4 col-12 col-md-6">
+                        <div class="card">
+                            <a href=""><img src="<?="../".$a['imageDrink']?>" class="card-img-top" alt="hình nước ngọt"></a>
+                            <div class="card-body">
+                                <h5 class="card-title">Tên nước: <?=$a['nameDrink']?></h5>
+                                <p class="card-text">Giá: <?=product_price($a['priceDrink'])?></p>
+                                <form method="post">
+                                    <div class="mb-3">
+                                        <span><label for="SLDrink">Số lượng</label></span>
+                                        <span><input type="number" name="SL" id="SLDrink"></span>
+                                    </div>
+                                    <input type="hidden" name="maDrink" value="<?=$a['maDrink']?>">
+                                    <input type="submit" name="buyDrink" class="btn btn-primary" value="Đặt">
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                    <?php
+                }
+            }else{
+                echo $resultGetDrink['message'];
+            }
+        ?>
+    </div>
 </div>
 <?php
 if(!empty($error)){
@@ -178,5 +248,9 @@ if(!empty($error)){
     echo "<div class='alert alert-success'>$success</div>";
 }
 ?>
+<div class="footer col-lg-12 col-12">
+    <p>Quản lý sân bóng đá mini 2021.</p>
+</div>
+
 </body>
 </html>

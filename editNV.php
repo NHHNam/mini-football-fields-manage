@@ -56,11 +56,11 @@ if($resultGetInfo['code'] == 0){
         </form>
     </div>
 </nav>
-<a style="text-decoreation: none;" href="api/dsKhachhang.php"><i class="fas fa-arrow-circle-left"></i></a>
+<a style="text-decoreation: none;" href="api/dsNv.php"><i class="fas fa-arrow-circle-left"></i></a>
 <?php
 $idOld = $_POST['id'];
 // $userNameKH = $_POST['userNameKH'];
-$result2 = get_info($idOld);
+$result2 = get_info_staff($idOld);
 if($result2['code'] == 0){
     $b = $result2['data'];
 }else{
@@ -70,7 +70,7 @@ if(isset($_POST['suaKH'])){
     $id = $_POST['id'];
     $ten = $_POST['ten'];
     $pwd = $_POST['pwd'];
-    $result1 = update_khachhang($id, $ten, $pwd);
+    $result1 = update_staff($id, $ten, $pwd);
     if($result1['code'] == 0){
         $success = $result1['message'];
     }else{

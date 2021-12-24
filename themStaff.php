@@ -34,6 +34,7 @@ if(!$_SESSION["username"]){
 </head>
 <body>
 <?php
+$success = "";
 $error = "";
 $resultGetInfo = get_all_admin($_SESSION['username']);
 if($resultGetInfo['code'] == 0){
@@ -59,56 +60,53 @@ if($resultGetInfo['code'] == 0){
 </nav>
 
 <?php
-$error = "";
-$success = "";
-if(isset($_POST['addSan'])){
-    $nameSan = $_POST['nameSan'];
-    $maSan = $_POST['maSan'];
-    $priceSan = $_POST['priceSan'];
-    $hinhSan = "images/". $_FILES['hinhSan']['name'];
-    if(move_uploaded_file($_FILES['hinhSan']['tmp_name'], $hinhSan)){
-        $resultAddSan = add_new_san($maSan, $nameSan, $priceSan, $hinhSan);
-        if($resultAddSan['code'] == 0){
-            $success = $resultAddSan['message'];
+    if(isset($_POST['addUser'])){
+        $username = "nv". $_POST['accountname'];
+        $name = $_POST['nameKH'];
+        $pwd = $_POST['pwd'];
+        $hinh = "images/".$_FILES['hinhDaiDien']['name'];
+        move_uploaded_file($_FILES['hinhDaiDien']['tmp_name'], $hinh);
+        $result1 = add_new_staff($name, $username, $pwd, $hinh);
+        if($result1['code'] == 0){
+            $success = $result1['message'];
         }else{
-            $error = $resultAddSan['message'];
+            $error = $result1['message'];
         }
     }
-}
 ?>
 <div class="container">
-    <a style="text-decoreation: none;" href="api/dsSanBong.php"><i class="fas fa-arrow-circle-left"></i></a>
+    <a style="text-decoreation: none;" href="api/dsNv.php"><i class="fas fa-arrow-circle-left"></i></a>
     <div class="d-flex justify-content-center">
         <div class="card">
             <div class="card-body">
                 <form novalidate method="post" enctype="multipart/form-data">
-                    <h3>Thêm sân bóng mới</h3>
+                    <h3>Thêm nhân viên mới</h3>
                     <div class="input-group form-group">
                         <div class="input-group-prepend">
-                            <span class="input-group-text"><i class="fas fa-futbol"></i></i></span>
+                            <span class="input-group-text"><i class="fas fa-user"></i></span>
                         </div>
-                        <input class="input-group-text form-control" type="text" name="nameSan" placeholder="Nhập tên của sân bóng">
+                        <input class="input-group-text form-control" type="text" name="nameKH" placeholder="Enter name of NV">
                     </div>
 
                     <div class="input-group form-group">
                         <div class="input-group-prepend">
-                            <span class="input-group-text"><i class="far fa-futbol"></i></span>
+                            <span class="input-group-text"><i class="fas fa-user-circle"></i></span>
                         </div>
-                        <input class="input-group-text form-control" type="text" name="maSan" placeholder="Nhập mã của sân bóng">
+                        <input class="input-group-text form-control" type="text" name="accountname" placeholder="enter username of NV">
                     </div>
 
                     <div class="input-group form-group">
                         <div class="input-group-prepend">
-                            <span class="input-group-text"><i class="fas fa-money-bill-wave"></i></span>
+                            <span class="input-group-text"><i class="fas fa-key"></i></span>
                         </div>
-                        <input class="input-group-text form-control" type="number" name="priceSan" placeholder="Nhập giá thuê">
+                        <input class="input-group-text form-control" type="password" name="pwd" placeholder="Enter password of NV">
                     </div>
 
                     <div class="input-group form-group">
                         <div class="input-group-prepend">
                             <span class="input-group-text"><i class="fas fa-image"></i></span>
                         </div>
-                        <input class="input-group-text form-control" type="file" name="hinhSan">
+                        <input class="input-group-text form-control" type="file" name="hinhDaiDien">
                     </div>
                     <p id="errors" style="text-align: center; font-weight: bold; font-size:20px; color: red;">
                         <?php
@@ -120,7 +118,7 @@ if(isset($_POST['addSan'])){
                         ?>
                     </p>
                     <div class="form-group">
-                        <input type="submit" class="btn btn-success  form-control"name="addSan" value="Thêm sân bóng">
+                        <input type="submit" class="btn btn-primary form-control" name="addUser" value="Thêm nhân viên">
                     </div>
                 </form>
             </div>

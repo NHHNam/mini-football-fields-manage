@@ -56,7 +56,7 @@ if($resultGetInfo['code'] == 0){
     <table class="table">
         <thead>
         <tr>
-            <th>Id</th>
+            <th>STT</th>
             <th>Image</th>
             <th>Name</th>
             <th>Username</th>
@@ -66,13 +66,14 @@ if($resultGetInfo['code'] == 0){
         </thead>
         <tbody id="table-body">
         <?php
-        $result = get_all_user_khachhang();
+        $result = get_all_account_nhanvien();
+        $stt = 1;
         if($result['code'] == 0){
-            $dataKhachHang = $result['data'];
-            foreach($dataKhachHang as $a){
+            $dataNV = $result['data'];
+            foreach($dataNV as $a){
                 ?>
                 <tr>
-                    <td><?=$a['id']?></td>
+                    <td><?=$stt?></td>
                     <td><img src="
                                     <?php
                         echo "../".$a['image'];
@@ -81,24 +82,25 @@ if($resultGetInfo['code'] == 0){
                     <td><?=$a['name']?></td>
                     <td><?=$a['username']?></td>
                     <td><?=$a['password']?></td>
-                    <form action="../editKH.php" method="post">
+                    <form action="../editNV.php" method="post">
                         <input type="hidden" name="id" value="<?=$a['id']?>">
                         <td style="text-align: center;"><button class="btn btn-success" type="submit">Edit</button></td>
                     </form>
 
-                    <form action="xoaKH.php" method="post">
+                    <form action="xoaNV.php" method="post">
                         <input type="hidden" name="id" value="<?=$a['id']?>">
                         <td style="text-align: center;"><button class="btn btn-danger" type="submit">Delete</button></td>
                     </form>
                 </tr>
                 <?php
+                $stt+=1;
             }
         }
         ?>
 
         </tbody>
     </table>
-    <button class="btn btn-success"><a style="text-decoration: none; color:white;" href="../themKH.php">Thêm Khách Hàng Mới</a></button>
+    <button class="btn btn-success"><a style="text-decoration: none; color:white;" href="../themStaff.php">Thêm Nhân Viên Mới</a></button>
 </div>
 </body>
 </html>

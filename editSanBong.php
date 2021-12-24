@@ -93,7 +93,7 @@ if($resultGetInfo['code'] == 0){
                 <input class="input-group" type="number" value="<?=$data1['giaSan']?>" name="gia" required>
             </div>
             <div class="form-group">
-                <input class="input-group btn btn-success" name="suaSan" value="Sua San" type="submit">
+                <input class="input-group btn btn-success" name="suaSan" value="Sửa Sân" type="submit">
             </div>
             <div class="form-group">
                 <?php
