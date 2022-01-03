@@ -127,6 +127,28 @@ if(!empty($_SESSION['username'])){
                 $error = $resultAdd['message'];
             }
         }
+    }else if(isset($_POST['buyDrink']) && isset($_SESSION['username'])){ 
+        // print_r($_POST);
+        $maKH = $_SESSION['username'];
+        $SL = $_POST['SL'];
+        $maDrink = $_POST['maDrink'];
+        $maDon = "";
+        if(check_exist_drink($maDrink)){
+            $resultAddDrink = update_drink_giohang($_SESSION['username'], $maDrink, $SL);
+            update_drink_giohang_tam($_SESSION['username'], $maDrink, $SL);
+        }else{
+            $resultAddDrink = add_drink_into_giohang($maDrink, $maKH, $SL);
+            add_drink_into_giohang_tam($maDon, $maDrink, $maKH, $SL);
+        }
+        if($resultAddDrink['code'] == 0){
+            $success = "Đã thêm nước vào trong giỏ hàng";
+        }else{
+            $error = $resultAddDrink['message'];
+        }
+    }else if(!(isset($_SESSION['username'])) && isset($_POST['buyDrink'])){
+        $error = "Không thể đặt nước vì bạn chưa đăng nhập <a href='login.php'>Đăng nhập</a>";
+    }else{
+        echo "";
     }
 ?>
 <a style="text-decoreation: none;" href="../index.php"><i class="fas fa-arrow-circle-left"></i></a>
@@ -185,29 +207,7 @@ if(!empty($_SESSION['username'])){
     </div>
     <h3 style="margin-top: 30px;">Danh sách các sản phẩm dùng trong sân: </h3>  
     <?php 
-        if(isset($_POST['buyDrink']) && isset($_SESSION['username'])){ 
-            // print_r($_POST);
-            $maKH = $_SESSION['username'];
-            $SL = $_POST['SL'];
-            $maDrink = $_POST['maDrink'];
-            $maDon = "";
-            if(check_exist_drink($maDrink)){
-                $resultAddDrink = update_drink_giohang($_SESSION['username'], $maDrink, $SL);
-                update_drink_giohang_tam($_SESSION['username'], $maDrink, $SL);
-            }else{
-                $resultAddDrink = add_drink_into_giohang($maDrink, $maKH, $SL);
-                add_drink_into_giohang_tam($maDon, $maDrink, $maKH, $SL);
-            }
-            if($resultAddDrink['code'] == 0){
-                $success = "Đã thêm nước vào trong giỏ hàng";
-            }else{
-                $error = $resultAddDrink['message'];
-            }
-        }else if(!(isset($_SESSION['username'])) && isset($_POST['buyDrink'])){
-            $error = "Không thể đặt nước vì bạn chưa đăng nhập <a href='login.php'>Đăng nhập</a>";
-        }else{
-            echo "";
-        }
+        
     ?>
     <div class="row">
         <?php
@@ -240,14 +240,14 @@ if(!empty($_SESSION['username'])){
             }
         ?>
     </div>
+    <?php
+    if(!empty($error)){
+        echo "<div class='alert alert-danger mt-2'>$error</div>";
+    }else if(!empty($success)){
+        echo "<div class='alert alert-success mt-2'>$success</div>";
+    }
+    ?>
 </div>
-<?php
-if(!empty($error)){
-    echo "<div class='alert alert-danger'>$error</div>";
-}else if(!empty($success)){
-    echo "<div class='alert alert-success'>$success</div>";
-}
-?>
 <div class="footer col-lg-12 col-12">
     <p>Quản lý sân bóng đá mini 2021.</p>
 </div>

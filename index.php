@@ -123,8 +123,8 @@ if(!empty($_SESSION['username'])){
                                 <div class="card">
                                     <a href="api/chiTietSan.php?tenSan=<?=$a['tenSan']?>"><img style="height: 300px" src="<?=$a['imageSan']?>" class="card-img-top" alt="hình sân bóng"></a>
                                     <div class="card-body">
-                                        <h5 class="card-title"><?=$a['tenSan']?></h5>
-                                        <p class="card-text"><?=product_price($a['giaSan'])?> / phút</p>
+                                        <h5 class="card-title">Tên sân: <?=$a['tenSan']?></h5>
+                                        <p class="card-text">Giá: <?=product_price($a['giaSan'])?> / phút</p>
                                     </div>
                                 </div>
                             </div>

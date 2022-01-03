@@ -151,7 +151,7 @@ if(!empty($_SESSION['username'])){
             $hinhThucThanhToan = $_POST['hinhThucThanhToan'];
             $tongTien = $_POST['tongTien'];
             $maKH = $_POST['maKH'];
-            $ngayLap = date("Y/m/d");
+            $ngayLap = date("Y-m-d");
             $status = "Waiting";
             $maDon = $_POST['maDon'];
             $result3 = thanh_toan($maKH, $maDon, $hinhThucThanhToan, $tongTien, $ngayLap, $status);

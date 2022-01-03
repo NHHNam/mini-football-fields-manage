@@ -885,4 +885,45 @@
         }
         return array('code'=>0, 'message'=>'', 'data' => $data);
     }
+
+    function add_to_doanh_thu($sodon, $doanhthu, $date){
+        $conn = open_database();
+        $sql = "insert into doanhthu(sodon, doanhthu, date) values(?,?,?)";
+        $stmt = $conn->prepare($sql);
+        $stmt->bind_param('iis', $sodon, $doanhthu, $date);
+
+        if(!$stmt->execute()){
+            return array('code' => 1, 'message' =>'cannot execute command');
+        }
+        return array('code'=>0, 'message'=>'thêm vào doanh thu thành công');
+    }
+
+    function update_to_doanh_thu($sodon, $doanhthu, $date){
+        $conn = open_database();
+        $sql = "update doanhthu set sodon = sodon + ?, doanhthu = doanhthu + ? where date = ?";
+        $stmt = $conn->prepare($sql);
+        $stmt->bind_param('iis', $sodon, $doanhthu, $date);
+
+        if(!$stmt->execute()){
+            return array('code' => 1, 'message' =>'cannot execute command');
+        }
+        return array('code'=>0, 'message'=>'thêm vào doanh thu thành công');
+    }
+
+    function check_date_exists($date){
+        $conn = open_database();
+        $sql = "SELECT * FROM doanhthu where date = ?";
+        $stmt = $conn->prepare($sql);
+        $stmt->bind_param('s', $date);
+
+        if(!$stmt->execute()){
+            return array('code' => 1, 'message' =>'cannot execute');
+        }
+
+        $result = $stmt->get_result();
+        if($result->num_rows == 0){
+            return false;
+        }
+        return true;
+    }
 ?>

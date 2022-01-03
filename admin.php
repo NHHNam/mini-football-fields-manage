@@ -96,6 +96,15 @@ if($resultGetInfo['code'] == 0){
                 </div>
             </div>
         </div>
+
+        <div class="col-lg-4 col-12 col-md-6 mb-2 mt-2">
+            <div class="card">
+                <a href="doanhThu.php"><img style="height: 300px" src="images/chart.jpeg" class="card-img-top" alt=""></a>
+                <div class="card-body">
+                    <h5 class="card-title">Thống kê doanh thu</h5>
+                </div>
+            </div>
+        </div>
     </div> 
 </div>
 </body>

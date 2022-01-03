@@ -8,9 +8,17 @@
     $success = "";
     $tongThanhToan = 0;
     if(isset($_POST['approve'])){
+        $doanhThu = $_POST['doanhThu'];
         $maDonAp = $_POST['maDonAp'];
         $status = "Success";
+        $date = date("Y-m-d");
         $result1 = update_status_hoa_don_by_staff($status, $maDonAp);
+        if(check_date_exists($date) === true){
+            $result2 = update_to_doanh_thu(1, $doanhThu, $date);
+        }else{
+            $result2 = add_to_doanh_thu(1, $doanhThu, $date);
+        }
+
         if($result1['code'] == 0){
             $success = $result1['message'];
         }else{
@@ -110,6 +118,7 @@ if(!empty($_SESSION['username'])){
                             <td><?=product_price($a['tongtien'])?></td>
                             <td><?=$a['status']?></td>
                             <form method="post">
+                                <input type="hidden" name="doanhThu" value="<?=$a['tongtien']?>">
                                 <input type="hidden" name="maDonAp" value="<?=$a['maDon']?>">
                                 <td><input type="submit" value="Approve" name="approve"></td>
                             </form>
