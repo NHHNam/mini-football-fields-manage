@@ -13,6 +13,32 @@ require_once("db.php");
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <style>
+        body{
+            background: linear-gradient(to bottom, #33ccff 0%, #ff99cc 100%);
+        }
+        .container{
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .form-login{
+            background: white;
+            border-radius: 5%;
+            width: 500px;
+            padding: 20px 20px;
+            box-shadow: 5px 10px 10px rgba(0,0,0,0.3);
+        }
+
+        .form-login p{
+            text-align: center;
+            font-size: 45px;
+            border-bottom: 1px solid #5e5e5e;
+            font-weight: 600;
+        }
+    </style>
 </head>
 <body>
 <?php
@@ -56,25 +82,30 @@ if(isset($_POST['login'])){
 }
 ?>
 <div class="container">
-    <h2>Login form</h2>
-    <form method="post">
-        <div class="form-group">
-            <label for="email">Username:</label>
-            <input type="text" class="form-control" id="email" placeholder="Enter email" name="accountName">
-        </div>
-        <div class="form-group">
-            <label for="pwd">Password:</label>
-            <input type="password" class="form-control" id="pwd" placeholder="Enter password" name="pwd">
-        </div>
-        <div class="form-group">
-            <?php
-            if(!empty($error)){
-                echo '<div class="alert alert-danger">'.$error.'</div>';
-            }
-            ?>
-        </div>
-        <button type="submit" name="login" class="btn btn-primary">Login</button>
-    </form>
+    <div class="form-login">
+        <p>Đăng nhập</p>
+        <form method="post">
+            <div class="form-group">
+                <label for="email">Username:</label>
+                <input type="text" class="form-control" value="<?php if(!empty($accountName)) echo $accountName?>" id="email" placeholder="Nhập tên đăng nhập" name="accountName">
+            </div>
+            <div class="form-group">
+                <label for="pwd">Password:</label>
+                <input type="password" class="form-control" value="<?php if(!empty($pwd)) echo $pwd?>" id="pwd" placeholder="Nhập mật khẩu" name="pwd">
+            </div>
+            <div class="form-group">
+                <?php
+                if(!empty($error)){
+                    echo '<div class="alert alert-danger">'.$error.'</div>';
+                }
+                ?>
+            </div>
+            <div class="form-group">
+                Nếu bạn chưa có tài khoản ? <a href="./register.php">Đăng ký</a>
+            </div>
+            <button type="submit" name="login" class="btn btn-primary w-100">Login</button>
+        </form>
+    </div>
 </div>
 </body>
 </html>

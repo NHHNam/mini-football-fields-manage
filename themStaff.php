@@ -63,7 +63,7 @@ if($resultGetInfo['code'] == 0){
     if(isset($_POST['addUser'])){
         $username = "nv". $_POST['accountname'];
         $name = $_POST['nameKH'];
-        $pwd = $_POST['pwd'];
+        $pwd = "nv". $_POST['accountname'];
         $hinh = "images/".$_FILES['hinhDaiDien']['name'];
         move_uploaded_file($_FILES['hinhDaiDien']['tmp_name'], $hinh);
         $result1 = add_new_staff($name, $username, $pwd, $hinh);
@@ -85,21 +85,14 @@ if($resultGetInfo['code'] == 0){
                         <div class="input-group-prepend">
                             <span class="input-group-text"><i class="fas fa-user"></i></span>
                         </div>
-                        <input class="input-group-text form-control" type="text" name="nameKH" placeholder="Enter name of NV">
+                        <input class="input-group-text form-control" type="text" name="nameKH" placeholder="Nhập tên của nhân viên">
                     </div>
 
                     <div class="input-group form-group">
                         <div class="input-group-prepend">
                             <span class="input-group-text"><i class="fas fa-user-circle"></i></span>
                         </div>
-                        <input class="input-group-text form-control" type="text" name="accountname" placeholder="enter username of NV">
-                    </div>
-
-                    <div class="input-group form-group">
-                        <div class="input-group-prepend">
-                            <span class="input-group-text"><i class="fas fa-key"></i></span>
-                        </div>
-                        <input class="input-group-text form-control" type="password" name="pwd" placeholder="Enter password of NV">
+                        <input class="input-group-text form-control" type="text" name="accountname" placeholder="Nhập tên tài khoản của nhân viên">
                     </div>
 
                     <div class="input-group form-group">

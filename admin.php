@@ -58,11 +58,45 @@ if($resultGetInfo['code'] == 0){
         </form>
     </div>
 </nav>
-<div class="button-setup">
-    <button class="btn btn-danger"><a href="api/dsSanBong.php">Manage SanBong</a></button>
-    <button class="btn btn-danger"><a href="api/dsKhachhang.php">Manage Khachhang</a></button>
-    <button class="btn btn-danger"><a href="api/dsNv.php">Manage NhanVien</a></button>
-    <button class="btn btn-danger"><a href="api/dsDrink.php">Manage Drink</a></button>
+
+<div class="container">
+    <div class="row">
+        <div class="col-lg-4 col-12 col-md-6 mb-2 mt-2">
+            <div class="card">
+                <a href="api/dsSanBong.php"><img style="height: 300px" src="images/modelSan.jpg" class="card-img-top" alt=""></a>
+                <div class="card-body">
+                    <h5 class="card-title">Quản lý sân bóng</h5>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-4 col-12 col-md-6 mb-2 mt-2">
+            <div class="card">
+                <a href="api/dsKhachhang.php"><img style="height: 300px" src="images/customer.jpeg" class="card-img-top" alt=""></a>
+                <div class="card-body">
+                    <h5 class="card-title">Quản lý khách hàng</h5>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-4 col-12 col-md-6 mb-2 mt-2">
+            <div class="card">
+                <a href="api/dsNv.php"><img style="height: 300px" src="images/staff.jpeg" class="card-img-top" alt=""></a>
+                <div class="card-body">
+                    <h5 class="card-title">Quản lý nhân viên</h5>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-4 col-12 col-md-6 mb-2 mt-2">
+            <div class="card">
+                <a href="api/dsDrink.php"><img style="height: 300px" src="images/drink.jpeg" class="card-img-top" alt=""></a>
+                <div class="card-body">
+                    <h5 class="card-title">Quản lý nước</h5>
+                </div>
+            </div>
+        </div>
+    </div> 
 </div>
 </body>
 </html>

@@ -42,7 +42,7 @@ if($resultGetInfo['code'] == 0){
         <form class="form-inline my-2 my-lg-0">
             <div class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    <?=$data['name']?>
+                    <img src="<?= "../" . $data['image']?>" style="max-width: 50px; max-height: 50px" />
                 </a>
                 <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                     <a class="dropdown-item" href="../logout.php">Logout</a>
@@ -56,8 +56,7 @@ if($resultGetInfo['code'] == 0){
     <table class="table">
         <thead>
         <tr>
-            <th>STT</th>
-            <th>Image</th>
+            <th></th>
             <th>Name</th>
             <th>Username</th>
             <th>Password</th>
@@ -74,11 +73,6 @@ if($resultGetInfo['code'] == 0){
                 ?>
                 <tr>
                     <td><?=$stt?></td>
-                    <td><img src="
-                                    <?php
-                        echo "../".$a['image'];
-                        ?>
-                                " style="max-width: 80px;"></td>
                     <td><?=$a['name']?></td>
                     <td><?=$a['username']?></td>
                     <td><?=$a['password']?></td>

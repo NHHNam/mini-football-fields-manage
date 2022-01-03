@@ -37,34 +37,38 @@ if(!empty($_SESSION['username'])){
         $error = $resultGetInfo['message'];
     }
     ?>
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
-        <div class="collapse navbar-collapse" id="navbarSupportedContent">
-            <a class="navbar-brand mr-auto" href="#">Trang index</a>
-            <form class="form-inline my-2 my-lg-0">
-                <div class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        <img src="<?=$data['image']?>" alt="Anh dai dien" style="max-width: 60px;">
-                    </a>
-                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                        <a class="dropdown-item" href="api/xemHoaDon.php">Đơn hàng</a>
-                        <a class="dropdown-item" href="api/gioHang.php">Giỏ hàng</a>
-                        <a class="dropdown-item" href="logout.php">Logout</a>
-                    </div>
+        <div class="col-lg-12 col-12">
+            <nav class="navbar navbar-expand-lg navbar-light bg-light">
+                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                    <a class="navbar-brand mr-auto" href="#">Trang index</a>
+                    <form class="form-inline my-2 my-lg-0">
+                        <div class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <img src="<?=$data['image']?>" alt="Anh dai dien" style="max-width: 60px; max-height: 60px;">
+                            </a>
+                            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                <a class="dropdown-item" href="api/xemHoaDon.php">Đơn hàng</a>
+                                <a class="dropdown-item" href="api/gioHang.php">Giỏ hàng</a>
+                                <a class="dropdown-item" href="logout.php">Logout</a>
+                            </div>
+                        </div>
+                    </form>
                 </div>
-            </form>
+            </nav>
         </div>
-    </nav>
     <?php
 }else{
     ?>
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
-        <div class="collapse navbar-collapse" id="navbarSupportedContent">
-            <a class="navbar-brand mr-auto" href="#">Trang chủ</a>
-            <form class="form-inline my-2 my-lg-0">
-                <a class="nav-link" href="login.php">Login</a>
-            </form>
-        </div>
-    </nav>
+    <div class="col-lg-12 col-12">
+        <nav class="navbar navbar-expand-lg navbar-light bg-light">
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <a class="navbar-brand mr-auto" href="#">Trang chủ</a>
+                <form class="form-inline my-2 my-lg-0">
+                    <a class="nav-link" href="login.php">Login</a>
+                </form>
+            </div>
+        </nav>
+    </div>
     <?php
 }
 ?>
@@ -88,7 +92,7 @@ if(!empty($_SESSION['username'])){
                             echo 'active';
                         }
                         ?>">
-                            <a href="api/chiTietSan.php?tenSan=<?=$a['tenSan']?>"><img class="d-block" src="<?=$a['imageSan']?>" alt="First slide"></a>
+                            <a href="api/chiTietSan.php?tenSan=<?=$a['tenSan']?>"><img style="height: 600px;" class="d-block" src="<?=$a['imageSan']?>" alt="First slide"></a>
                         </div>
                         <?php
                         $i++;
@@ -117,7 +121,7 @@ if(!empty($_SESSION['username'])){
                             ?>
                             <div class="col-lg-4 col-12 col-md-6">
                                 <div class="card">
-                                    <a href="api/chiTietSan.php?tenSan=<?=$a['tenSan']?>"><img src="<?=$a['imageSan']?>" class="card-img-top" alt="hình sân bóng"></a>
+                                    <a href="api/chiTietSan.php?tenSan=<?=$a['tenSan']?>"><img style="height: 300px" src="<?=$a['imageSan']?>" class="card-img-top" alt="hình sân bóng"></a>
                                     <div class="card-body">
                                         <h5 class="card-title"><?=$a['tenSan']?></h5>
                                         <p class="card-text"><?=product_price($a['giaSan'])?> / phút</p>

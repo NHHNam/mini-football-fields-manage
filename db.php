@@ -152,6 +152,10 @@
             return array('code' => 1, 'message' => "Can not execute command");
         }
         $result = $stmt->get_result();
+
+        if($result->num_rows == 0){
+            return array('code' => 2, 'message'=>'Không có sân nào');
+        }
         while($row = $result->fetch_assoc()){
             $dataResult[] = $row;
         }
@@ -184,6 +188,11 @@
             return array('code' => 1, 'message' => "Can not execute command");
         }
         $result = $stmt->get_result();
+
+        if($result->num_rows == 0){
+            return array('code' => 1, 'message' =>'Không có khách hàng');
+        }
+
         while($row = $result->fetch_assoc()){
             $dataResult[] = $row;
         }
@@ -298,7 +307,7 @@
         return array('code'=>0, 'message'=>'Sửa sân thành công');
     }
 
-    function add_new_khachhang($name, $username, $pwd, $image){
+    function register($name, $username, $pwd, $image){
         if(check_user_exists($username) == true){
             return array('code' => 2, 'message'=>'Khách hàng đã tồn tại vui lòng nhập tên khác');
         }
@@ -310,10 +319,8 @@
         if(!$stmt->execute()){
             return array('code' => 1, 'message' => "Can not execute command");
         }
-        return array('code' => 0, 'message' => 'Thêm khách hàng mới thành công');
+        return array('code' => 0, 'message' => 'Đăng ký thành công');
     }
-
-
 
     function add_new_staff($name, $username, $pwd, $image){
         if(check_staff_exists($username) == true){

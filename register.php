@@ -1,9 +1,9 @@
 <?php
 session_start();
 require_once('db.php');
-if(!$_SESSION["username"]){
-    header("Location: login.php");
-}
+// if(!$_SESSION["username"]){
+//     header("Location: login.php");
+// }
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -25,48 +25,46 @@ if(!$_SESSION["username"]){
         .nav-item .dropdown-toggle .dropdown-menu{
             max-width: 50px;
         }
-        a i{
-            font-size: 30px;
-            margin-bottom: 30px;
-            margin-top: 30px;
+        
+        .header{
+            height: 40px;
         }
+
+        .header a i{
+            font-size: 30px;
+            line-height: 40px;
+        }
+
+        .header p{
+            font-size: 30px;
+            line-height: 40px;
+            font-weight: 600;
+        }
+
+        body{
+            background: linear-gradient(to bottom, #33ccff 0%, #ff99cc 100%);
+        }
+
+        .container{
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }   
     </style>
 </head>
 <body>
-<?php
-$success = "";
-$error = "";
-$resultGetInfo = get_all_admin($_SESSION['username']);
-if($resultGetInfo['code'] == 0){
-    $data = $resultGetInfo['data'];
-}else{
-    $error = $resultGetInfo['message'];
-}
-?>
-<nav class="navbar navbar-expand-lg navbar-light bg-light">
-    <div class="collapse navbar-collapse" id="navbarSupportedContent">
-        <a class="navbar-brand mr-auto" href="#">Trang Admin</a>
-        <form class="form-inline my-2 my-lg-0">
-            <div class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    <img src="<?=$data['image']?>" alt="Anh dai dien" style="max-width: 60px;">
-                </a>
-                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                    <a class="dropdown-item" href="logout.php">Logout</a>
-                </div>
-            </div>
-        </form>
-    </div>
-</nav>
 
 <?php
+    $success = "";
+    $error = "";
     if(isset($_POST['addUser'])){
         $username = $_POST['accountname'];
         $name = $_POST['nameKH'];
         $pwd = $_POST['pwd'];
         $hinh = "images/".$_FILES['hinhDaiDien']['name'];
         move_uploaded_file($_FILES['hinhDaiDien']['tmp_name'], $hinh);
-        $result1 = add_new_khachhang($name, $username, $pwd, $hinh);
+        $result1 = register($name, $username, $pwd, $hinh);
         if($result1['code'] == 0){
             $success = $result1['message'];
         }else{
@@ -75,31 +73,33 @@ if($resultGetInfo['code'] == 0){
     }
 ?>
 <div class="container">
-    <a style="text-decoreation: none;" href="api/dsKhachhang.php"><i class="fas fa-arrow-circle-left"></i></a>
     <div class="d-flex justify-content-center">
         <div class="card">
             <div class="card-body">
                 <form novalidate method="post" enctype="multipart/form-data">
-                    <h3>Thêm khách hàng mới</h3>
+                    <div class="form-group d-flex justify-content-around header">
+                        <a style="text-decoreation: none;" href="login.php"><i class="fas fa-arrow-circle-left"></i></a>
+                        <p>Đăng ký tài khoản</p>
+                    </div>
                     <div class="input-group form-group">
                         <div class="input-group-prepend">
                             <span class="input-group-text"><i class="fas fa-user"></i></span>
                         </div>
-                        <input class="input-group-text form-control" type="text" name="nameKH" placeholder="Enter name of KH">
+                        <input class="input-group-text form-control" type="text" name="nameKH" placeholder="Nhập tên người dùng">
                     </div>
 
                     <div class="input-group form-group">
                         <div class="input-group-prepend">
                             <span class="input-group-text"><i class="fas fa-user-circle"></i></span>
                         </div>
-                        <input class="input-group-text form-control" type="text" name="accountname" placeholder="enter username of KH">
+                        <input class="input-group-text form-control" type="text" name="accountname" placeholder="Nhập tên tài khoản">
                     </div>
 
                     <div class="input-group form-group">
                         <div class="input-group-prepend">
                             <span class="input-group-text"><i class="fas fa-key"></i></span>
                         </div>
-                        <input class="input-group-text form-control" type="password" name="pwd" placeholder="Enter password of KH">
+                        <input class="input-group-text form-control" type="password" name="pwd" placeholder="Nhập mật khẩu">
                     </div>
 
                     <div class="input-group form-group">
@@ -118,7 +118,7 @@ if($resultGetInfo['code'] == 0){
                         ?>
                     </p>
                     <div class="form-group">
-                        <input type="submit" class="btn btn-primary form-control" name="addUser" value="Thêm khách hàng">
+                        <input type="submit" class="btn btn-primary form-control" name="addUser" value="Đăng ký tài khoản">
                     </div>
                 </form>
             </div>
