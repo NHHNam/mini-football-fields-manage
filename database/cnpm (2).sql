@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Jan 03, 2022 at 11:32 AM
+-- Generation Time: Jan 05, 2022 at 11:17 AM
 -- Server version: 10.4.22-MariaDB
 -- PHP Version: 7.3.33
 
@@ -68,7 +68,9 @@ INSERT INTO `doanhthu` (`id`, `sodon`, `doanhthu`, `date`) VALUES
 (16, 6, 500000, '2021-12-29'),
 (17, 6, 800000, '2021-12-28'),
 (18, 6, 600000, '2021-12-27'),
-(19, 6, 600000, '2021-12-26');
+(19, 6, 600000, '2021-12-26'),
+(20, 2, 1660000, '2022-01-04'),
+(21, 1, 960000, '2022-01-05');
 
 -- --------------------------------------------------------
 
@@ -139,6 +141,13 @@ CREATE TABLE `hoadon` (
   `status` varchar(50) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
+--
+-- Dumping data for table `hoadon`
+--
+
+INSERT INTO `hoadon` (`id`, `maDon`, `maKH`, `hinhthuc`, `tongtien`, `ngayLap`, `status`) VALUES
+(40, 'Don2627', 'nam123', 'Trực tiếp', 960000, '2022-01-05', 'Success');
+
 -- --------------------------------------------------------
 
 --
@@ -148,6 +157,10 @@ CREATE TABLE `hoadon` (
 CREATE TABLE `khachhang` (
   `id` int(11) NOT NULL,
   `name` varchar(50) NOT NULL,
+  `email` varchar(50) NOT NULL,
+  `sdt` int(11) NOT NULL,
+  `diachi` varchar(100) NOT NULL,
+  `gender` varchar(10) NOT NULL,
   `username` varchar(50) NOT NULL,
   `password` varchar(50) NOT NULL,
   `image` varchar(50) NOT NULL
@@ -157,9 +170,9 @@ CREATE TABLE `khachhang` (
 -- Dumping data for table `khachhang`
 --
 
-INSERT INTO `khachhang` (`id`, `name`, `username`, `password`, `image`) VALUES
-(6, 'Nguyễn Hưng Hoài Nam', 'hoainam', '123', 'images/8c7e9fa06948d3b136dabfba06b33bac.JPG'),
-(7, 'Lê Ngọc Trân', 'ngoctran', '123', 'images/38c7ff97cdb45099476faa2f5ee0e96c.JPG');
+INSERT INTO `khachhang` (`id`, `name`, `email`, `sdt`, `diachi`, `gender`, `username`, `password`, `image`) VALUES
+(8, 'Nguyễn Hưng Hoài Nam', 'nguyenhunghoain@gmail.com', 123456789, '741/31 hương lộ 2', 'Nam', 'nam123', '123', 'images/352d89f4f9a4c98aeb6c51823f1ad7c1.JPG'),
+(9, 'Lê Ngọc Trân', 'tran@example.com', 123456789, '98 Lê Đình Cẩn, Bình Tân, TP.HCM', 'Nữ', 'ngoctran', '123', 'images/914aadad65fefae6bec5b9db46569430.JPG');
 
 -- --------------------------------------------------------
 
@@ -221,6 +234,14 @@ CREATE TABLE `tamgiohangdrink` (
   `soluong` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
+--
+-- Dumping data for table `tamgiohangdrink`
+--
+
+INSERT INTO `tamgiohangdrink` (`id`, `maDon`, `maDrink`, `maKH`, `soluong`) VALUES
+(59, 'Don2627', 'pepsi', 'nam123', 10),
+(60, 'Don2627', 'coca', 'nam123', 20);
+
 -- --------------------------------------------------------
 
 --
@@ -237,6 +258,15 @@ CREATE TABLE `tamgiohangsan` (
   `thoigian` int(11) NOT NULL,
   `ngayLap` date NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `tamgiohangsan`
+--
+
+INSERT INTO `tamgiohangsan` (`id`, `maDon`, `maKH`, `maSan`, `ngaydat`, `giodat`, `thoigian`, `ngayLap`) VALUES
+(47, 'Don2627', 'nam123', 'san1', '2022-01-06', '17:40:00', 60, '2022-01-05'),
+(48, 'Don2627', 'nam123', 'san1', '2022-01-06', '17:50:00', 60, '2022-01-05'),
+(49, 'Don2627', 'nam123', 'san2', '2022-01-06', '20:45:00', 60, '2022-01-05');
 
 --
 -- Indexes for dumped tables
@@ -310,7 +340,7 @@ ALTER TABLE `tamgiohangsan`
 -- AUTO_INCREMENT for table `doanhthu`
 --
 ALTER TABLE `doanhthu`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
 
 --
 -- AUTO_INCREMENT for table `drink`
@@ -322,25 +352,25 @@ ALTER TABLE `drink`
 -- AUTO_INCREMENT for table `giohang`
 --
 ALTER TABLE `giohang`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=66;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=72;
 
 --
 -- AUTO_INCREMENT for table `giohangdrink`
 --
 ALTER TABLE `giohangdrink`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=59;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=69;
 
 --
 -- AUTO_INCREMENT for table `hoadon`
 --
 ALTER TABLE `hoadon`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=38;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=41;
 
 --
 -- AUTO_INCREMENT for table `khachhang`
 --
 ALTER TABLE `khachhang`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
 -- AUTO_INCREMENT for table `nhanvien`
@@ -358,13 +388,13 @@ ALTER TABLE `sanbong`
 -- AUTO_INCREMENT for table `tamgiohangdrink`
 --
 ALTER TABLE `tamgiohangdrink`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=51;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=61;
 
 --
 -- AUTO_INCREMENT for table `tamgiohangsan`
 --
 ALTER TABLE `tamgiohangsan`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=44;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=50;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

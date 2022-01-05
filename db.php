@@ -4,6 +4,12 @@
     define('password', '');
     define('db','cnpm');
 
+    
+    function error(){
+        $error1 = "Cannot execute query";
+        return $error1;
+    }
+
     function open_database(){
         $conn = mysqli_connect(host, user, password, db);
         if($conn->connect_errno){
@@ -18,7 +24,7 @@
         $stmt = $conn->prepare($sql);
         $stmt->bind_param("ss",$username,$password);
         if(!$stmt->execute()){
-            return array('code' => 1, 'message' => "Can not execute command");
+            return array('code' => 1, 'message' => error());
         }
         $result = $stmt->get_result();
         $data = $result->fetch_assoc();
@@ -35,7 +41,7 @@
         $stmt = $conn->prepare($sql);
         $stmt->bind_param("ss",$username,$password);
         if(!$stmt->execute()){
-            return array('code' => 1, 'message' => "Can not execute command");
+            return array('code' => 1, 'message' => error());
         }
         $result = $stmt->get_result();
         $data = $result->fetch_assoc();
@@ -52,7 +58,7 @@
         $stmt = $conn->prepare($sql);
         $stmt->bind_param("ss",$username,$password);
         if(!$stmt->execute()){
-            return array('code' => 1, 'message' => "Can not execute command");
+            return array('code' => 1, 'message' => error());
         }
         $result = $stmt->get_result();
         $data = $result->fetch_assoc();
@@ -69,11 +75,11 @@
         $stmt = $conn->prepare($sql);
         $stmt->bind_param("s",$username);
         if(!$stmt->execute()){
-            return array('code' => 1, 'message' => "Can not execute command");
+            return array('code' => 1, 'message' => error());
         }
         $result = $stmt->get_result();
         if($result->num_rows == 0){
-            return array('code' => 2, 'message' => 'Data is not exist');
+            return array('code' => 2, 'message' => 'Tài khoản hay mật khẩu không tồn tại');
         }
         $data = $result->fetch_assoc();
         return array('code' => 0, 'message' =>'', 'data' => $data);
@@ -85,11 +91,11 @@
         $stmt = $conn->prepare($sql);
         $stmt->bind_param("s",$username);
         if(!$stmt->execute()){
-            return array('code' => 1, 'message' => "Can not execute command");
+            return array('code' => 1, 'message' => error());
         }
         $result = $stmt->get_result();
         if($result->num_rows == 0){
-            return array('code' => 2, 'message' => 'Data is not exist');
+            return array('code' => 2, 'message' => 'Tài khoản không tồn tại');
         }
         $data = $result->fetch_assoc();
         return array('code' => 0, 'message' =>'', 'data' => $data);
@@ -101,7 +107,7 @@
         $stmt = $conn->prepare($sql);
         $stmt->bind_param("s",$username);
         if(!$stmt->execute()){
-            return array('code' => 1, 'message' => "Can not execute command");
+            return array('code' => 1, 'message' => error());
         }
         $result = $stmt->get_result();
         if($result->num_rows == 0){
@@ -117,7 +123,7 @@
         $stmt = $conn->prepare($sql);
         $stmt->bind_param("i", $id);
         if(!$stmt->execute()){
-            return array('code' => 1, 'message' => "Can not execute command");
+            return array('code' => 1, 'message' => error());
         }
         $result = $stmt->get_result();
         if($result->num_rows == 0){
@@ -133,7 +139,7 @@
         $stmt = $conn->prepare($sql);
         $stmt->bind_param("i", $id);
         if(!$stmt->execute()){
-            return array('code' => 1, 'message' => "Can not execute command");
+            return array('code' => 1, 'message' => error());
         }
         $result = $stmt->get_result();
         if($result->num_rows == 0){
@@ -149,7 +155,7 @@
         $stmt = $conn->prepare($sql);
 
         if(!$stmt->execute()){
-            return array('code' => 1, 'message' => "Can not execute command");
+            return array('code' => 1, 'message' => error());
         }
         $result = $stmt->get_result();
 
@@ -159,7 +165,7 @@
         while($row = $result->fetch_assoc()){
             $dataResult[] = $row;
         }
-        return array('code' => 0, 'message' => 'Lấy dữ liệu thành công', 'data'=>$dataResult);
+        return array('code' => 0, 'message' => 'Lấy dữ liệu tất cả sân thành công', 'data'=>$dataResult);
     }
 
     function get_image_banner(){
@@ -168,7 +174,7 @@
         $stmt = $conn->prepare($sql);
 
         if(!$stmt->execute()){
-            return array('code' => 1, 'message' => "Can not execute command");
+            return array('code' => 1, 'message' => error());
         }
         $result = $stmt->get_result();
         $dataResult = array();
@@ -176,7 +182,7 @@
             if(sizeof($dataResult) < 3)
                 $dataResult[] = $row;
         }
-        return array('code' => 0, 'message' => 'Lấy dữ liệu thành công', 'data'=>$dataResult);
+        return array('code' => 0, 'message' => 'Lấy dữ liệu banner thành công', 'data'=>$dataResult);
     }
 
     function get_all_user_khachhang(){
@@ -185,7 +191,7 @@
         $stmt = $conn->prepare($sql);
 
         if(!$stmt->execute()){
-            return array('code' => 1, 'message' => "Can not execute command");
+            return array('code' => 1, 'message' => error());
         }
         $result = $stmt->get_result();
 
@@ -205,7 +211,7 @@
         $stmt = $conn->prepare($sql);
         $stmt->bind_param("s",$tenSan);
         if(!$stmt->execute()){
-            return array('code' => 1, 'message' => "Can not execute command");
+            return array('code' => 1, 'message' => error());
         }
         $result = $stmt->get_result();
         if($result->num_rows > 0){
@@ -221,7 +227,7 @@
         $stmt = $conn->prepare($sql);
         $stmt->bind_param("s",$username);
         if(!$stmt->execute()){
-            return array('code' => 1, 'message' => "Can not execute command");
+            return array('code' => 1, 'message' => error());
         }
         $result = $stmt->get_result();
         if($result->num_rows > 0){
@@ -237,7 +243,7 @@
         $stmt = $conn->prepare($sql);
         $stmt->bind_param("s",$username);
         if(!$stmt->execute()){
-            return array('code' => 1, 'message' => "Can not execute command");
+            return array('code' => 1, 'message' => error());
         }
         $result = $stmt->get_result();
         if($result->num_rows > 0){
@@ -257,7 +263,7 @@
         $stmt->bind_param('ssis', $maSan, $tenSan, $giaSan, $imageSan);
 
         if(!$stmt->execute()){
-            return array('code' => 1, 'message' => "Can not execute command");
+            return array('code' => 1, 'message' => error());
         }
         return array('code' => 0, 'message' => 'Thêm sân mới thành công');
     }
@@ -269,7 +275,7 @@
         $stmt->bind_param('s', $maSan);
 
         if(!$stmt->execute()){
-            return array('code' => 1, 'message' => "Can not execute command");
+            return array('code' => 1, 'message' => error());
         }
         return array('code' => 0, 'message' =>'Xoá sân thành công');
     }
@@ -307,17 +313,17 @@
         return array('code'=>0, 'message'=>'Sửa sân thành công');
     }
 
-    function register($name, $username, $pwd, $image){
+    function register($name, $email, $sdt, $diachi, $gender, $username, $pwd, $image){
         if(check_user_exists($username) == true){
             return array('code' => 2, 'message'=>'Khách hàng đã tồn tại vui lòng nhập tên khác');
         }
         $conn = open_database();
-        $sql = "INSERT INTO khachhang (name, username, password, image) VALUES(?,?,?,?)";
+        $sql = "INSERT INTO khachhang (name, email, sdt, diachi, gender, username, password, image) VALUES(?,?,?,?,?,?,?,?)";
         $stmt = $conn->prepare($sql);
-        $stmt->bind_param('ssss', $name, $username, $pwd, $image);
+        $stmt->bind_param('ssisssss', $name, $email, $sdt, $diachi, $gender, $username, $pwd, $image);
 
         if(!$stmt->execute()){
-            return array('code' => 1, 'message' => "Can not execute command");
+            return array('code' => 1, 'message' => error());
         }
         return array('code' => 0, 'message' => 'Đăng ký thành công');
     }
@@ -332,7 +338,7 @@
         $stmt->bind_param('ssss', $name, $username, $pwd, $image);
 
         if(!$stmt->execute()){
-            return array('code' => 1, 'message' => "Can not execute command");
+            return array('code' => 1, 'message' => error());
         }
         return array('code' => 0, 'message' => 'Thêm nhân viên mới thành công');
     }
@@ -344,7 +350,7 @@
         $stmt->bind_param('i', $id);
 
         if(!$stmt->execute()){
-            return array('code' => 1, 'message' => "Can not execute command");
+            return array('code' => 1, 'message' => error());
         }
         return array('code' => 0, 'message' =>'Xoá khách hàng thành công');
     }
@@ -356,7 +362,7 @@
         $stmt->bind_param('i', $id);
 
         if(!$stmt->execute()){
-            return array('code' => 1, 'message' => "Can not execute command");
+            return array('code' => 1, 'message' => error());
         }
         return array('code' => 0, 'message' =>'Xoá nhân viên thành công');
     }
@@ -925,5 +931,51 @@
             return false;
         }
         return true;
+    }
+
+    function check_password($pwd, $username){
+        $conn = open_database();
+        $sql = "SELECT * FROM khachhang WHERE username = ?";
+        $stmt = $conn->prepare($sql);
+        $stmt->bind_param('s', $username);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        $data = $result->fetch_assoc();
+        if($pwd == $data['password']){
+            return true;
+        }else{
+            return false;
+        }
+    }
+
+    function change_password_khachhang($oldpwd, $newpwd, $cpwd, $username){
+        $conn = open_database();
+
+        if($oldpwd == "" || $newpwd == "" || $cpwd == ""){ 
+            return array('code' =>1,'message' =>'Mật khẩu không được để trống');
+        }else if($newpwd != $cpwd){
+            return array('code' =>1,'message' =>'Mật khẩu không trùng');
+        }else if(check_password($oldpwd, $username) === false){
+            return array('code' =>1,'message' =>'Mật khẩu cũ không trùng');
+        }
+
+        $sql = "UPDATE khachhang SET password = ? WHERE username = ?";
+        $stmt = $conn->prepare($sql);
+        $stmt->bind_param('ss', $newpwd, $username);
+        if(!$stmt->execute()){
+            return array('code' => 1, 'message' =>'cannot execute command');
+        }
+        return array('code'=>0, 'message'=>'Đổi mật khẩu thành công');
+    }
+
+    function change_info_khachhang($name, $address, $gender, $username){
+        $conn = open_database();
+        $sql = "update khachhang set name = ?, diachi = ?, gender = ? where username = ?";
+        $stmt = $conn->prepare($sql);
+        $stmt->bind_param('ssss', $name, $address, $gender, $username);
+        if(!$stmt->execute()){
+            return array('code' => 1, 'message' =>error());
+        }
+        return array('code' => 0, 'message' =>'Đổi thông tin thành công');
     }
 ?>

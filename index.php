@@ -41,12 +41,13 @@ if(!empty($_SESSION['username'])){
             <nav class="navbar navbar-expand-lg navbar-light bg-light">
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <a class="navbar-brand mr-auto" href="#">Trang index</a>
-                    <form class="form-inline my-2 my-lg-0">
+                    <form class="form-inline my-2 my-lg-0 mr-5">
                         <div class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 <img src="<?=$data['image']?>" alt="Anh dai dien" style="max-width: 60px; max-height: 60px;">
                             </a>
                             <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                <a class="dropdown-item" href="api/chiTietUser.php">Thông tin cá nhân</a>
                                 <a class="dropdown-item" href="api/xemHoaDon.php">Đơn hàng</a>
                                 <a class="dropdown-item" href="api/gioHang.php">Giỏ hàng</a>
                                 <a class="dropdown-item" href="logout.php">Logout</a>

@@ -62,9 +62,14 @@ require_once('db.php');
         $username = $_POST['accountname'];
         $name = $_POST['nameKH'];
         $pwd = $_POST['pwd'];
+
+        $email = $_POST['emailKH'];
+        $sdt = $_POST['sdtKH'];
+        $address = $_POST['addrKH'];
+        $gender = $_POST['gender'];
         $hinh = "images/".$_FILES['hinhDaiDien']['name'];
         move_uploaded_file($_FILES['hinhDaiDien']['tmp_name'], $hinh);
-        $result1 = register($name, $username, $pwd, $hinh);
+        $result1 = register($name, $email, $sdt, $address, $gender, $username, $pwd, $hinh);
         if($result1['code'] == 0){
             $success = $result1['message'];
         }else{
@@ -86,6 +91,41 @@ require_once('db.php');
                             <span class="input-group-text"><i class="fas fa-user"></i></span>
                         </div>
                         <input class="input-group-text form-control" type="text" name="nameKH" placeholder="Nhập tên người dùng">
+                    </div>
+
+                    <div class="input-group form-group">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text"><i class="far fa-envelope"></i></span>
+                        </div>
+                        <input class="input-group-text form-control" type="text" name="emailKH" placeholder="Nhập email người dùng">
+                    </div>
+
+                    <div class="input-group form-group">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text"><i class="fas fa-phone"></i></span>
+                        </div>
+                        <input class="input-group-text form-control" type="text" name="sdtKH" placeholder="Nhập số điện thoại người dùng">
+                    </div>
+
+                    <div class="input-group form-group">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text"><i class="fas fa-home"></i></span>
+                        </div>
+                        <input class="input-group-text form-control" type="text" name="addrKH" placeholder="Nhập địa chỉ người dùng">
+                    </div>
+
+                    <div class="input-group form-group">
+                        <div class="input-group-prepend mr-1">
+                            <span class="input-group-text"><i class="fas fa-transgender"></i></span>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="gender"  value="Nam">
+                            <label class="form-check-label" for="inlineRadio1">Nam</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="gender"  value="Nữ">
+                            <label class="form-check-label" for="inlineRadio2">Nữ</label>
+                        </div>
                     </div>
 
                     <div class="input-group form-group">
