@@ -41,10 +41,9 @@
 
     function get_all_admin($username){
         $conn = open_database();
-        $capBac = "quanly";
-        $sql = "SELECT * FROM user WHERE username = ? and capBac = ?";
+        $sql = "SELECT * FROM user WHERE username = ?";
         $stmt = $conn->prepare($sql);
-        $stmt->bind_param("ss",$username, $capBac);
+        $stmt->bind_param("s",$username);
         if(!$stmt->execute()){
             return array('code' => 1, 'message' => error());
         }
@@ -273,11 +272,11 @@
         return array('code'=>0, 'message'=>'','data'=>$data);
     }
 
-    function update_san($tenSan, $giaSan,$maSan){
+    function update_san($tenSan, $giaSan,$maSan, $address, $description){
         $conn = open_database();
-        $sql = "update sanbong set tenSan = ?, giaSan = ? where maSan = ?";
+        $sql = "update sanbong set tenSan = ?, giaSan = ?, addressSan = ?, descSan = ? where maSan = ?";
         $stmt = $conn->prepare($sql);
-        $stmt->bind_param('sis', $tenSan, $giaSan, $maSan);
+        $stmt->bind_param('sisss', $tenSan, $giaSan, $address, $description, $maSan);
 
         if(!$stmt->execute()){
             return  array('code'=>1, 'Can not query command');
@@ -491,6 +490,18 @@
         $sql = "delete from giohang where maSan = ? and ngayLap = ? and maKH = ?";
         $stmt = $conn->prepare($sql);
         $stmt->bind_param("sss", $maSan, $curDate, $username);
+
+        if(!$stmt->execute()){
+            return array('code'=>1, 'message'=>'cannot execute the command');
+        }
+        return array('code'=>0, 'message'=>'Xoá sân trong giỏ hàng thành công');
+    }
+
+    function delete_san_tam_gio_hang($maSan, $curDate, $username, $gioDat){
+        $conn = open_database();
+        $sql = "delete from tamgiohangsan where maSan = ? and ngayLap = ? and maKH = ? and giodat = ?";
+        $stmt = $conn->prepare($sql);
+        $stmt->bind_param("ssss", $maSan, $curDate, $username, $gioDat);
 
         if(!$stmt->execute()){
             return array('code'=>1, 'message'=>'cannot execute the command');
@@ -1031,7 +1042,7 @@
         $gio1 = minutes($gioDat1);
         $tong1 = $gio1 + $thoigian1;
         $tong2 = $gio2 + $thoigian2;
-        if(($gio2 >= $gio1 && $tong2 <= $tong1)){
+        if(($gio2 >= $gio1 && $gio2 < $tong1) || ($gio2 >= $gio1 && $tong2 < $tong1 && $gio2 < $tong1) || ($gio2 >= $gio1 && $tong2 > $tong1 && $gio2 < $tong1)){
             return false;
         }
         return true;

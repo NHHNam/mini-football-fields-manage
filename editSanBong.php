@@ -13,7 +13,7 @@ $success = "";
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Trang giám đốc</title>
+    <title>Trang sửa sân bóng</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
@@ -71,11 +71,14 @@ if($resultGetInfo['code'] == 0){
     }else{
         $error = $result2['message'];
     }
+
     if(isset($_POST['suaSan'])){
         $maSan = $_POST['maSan'];
         $ten = $_POST['ten'];
         $gia = $_POST['gia'];
-        $result1 = update_san($ten, $gia, $maSan);
+        $desc = $_POST['descSan'];
+        $addressSan = $_POST['addressSan'];
+        $result1 = update_san($ten, $gia, $maSan, $addressSan, $desc);
         if($result1['code'] == 0){
             $success = $result1['message'];
         }else{
@@ -97,6 +100,14 @@ if($resultGetInfo['code'] == 0){
             <div class="form-group">
                 <label>Giá:</label>
                 <input class="input-group" type="number" value="<?=$data1['giaSan']?>" name="gia" required>
+            </div>
+            <div class="form-group">
+                <label>Address:</label>
+                <input class="input-group" type="text" value="<?=$data1['addressSan']?>" name="addressSan" required>
+            </div>
+            <div class="form-group">
+                <label>Chi tiết:</label>
+                <textarea class="input-group" name="descSan" cols="30" rows="10"><?=$data1['descSan']?></textarea>
             </div>
             <div class="form-group">
                 <input class="input-group btn btn-success" name="suaSan" value="Sửa Sân" type="submit">

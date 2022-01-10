@@ -6,9 +6,9 @@
     $keyword = "%{$_GET['word']}%";
 
     $conn = open_database();
-    $sql = "SELECT * FROM sanbong where tenSan LIKE ?";
+    $sql = "SELECT * FROM sanbong where tenSan LIKE ? or addressSan LIKE ?";
     $stmt = $conn->prepare($sql);
-    $stmt->bind_param('s', $keyword);
+    $stmt->bind_param('ss', $keyword, $keyword);
     $stmt->execute();
     $result = $stmt->get_result();
     while ($row = $result->fetch_assoc()){

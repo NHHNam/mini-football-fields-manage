@@ -14,7 +14,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>index page</title>
+    <title>Trang giỏ hàng</title>
     <link rel="stylesheet" href="css/index.css">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
@@ -105,6 +105,7 @@ if(!empty($_SESSION['username'])){
                         <form method="post">
                             <input type="hidden" name="username" value="<?=$_SESSION['username']?>" />
                             <input type="hidden" name="maSanToDelete" value="<?=$a['maSan']?>">
+                            <input type="hidden" name="gioDat" value="<?=$a['giodat']?>">
                             <td><button class="btn btn-danger" name="del" type="submit">Delete</button></td>
                         </form>
                     </tr>
@@ -163,7 +164,9 @@ if(!empty($_SESSION['username'])){
     if(isset($_POST['del'])){
         $maSanToDel = $_POST['maSanToDelete'];
         $usernameKH = $_POST['username'];
+        $gioDat = $_POST['gioDat'];
         $result1 = delete_san_gio_hang($maSanToDel, $curDate, $usernameKH);
+        $result2 = delete_san_tam_gio_hang($maSanToDel, $curDate, $usernameKH, $gioDat);
         if($result1['code'] == 0){
             $success = $result1['message'];
         }else{
