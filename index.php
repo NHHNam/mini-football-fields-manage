@@ -24,6 +24,19 @@ $success = "";
         .card a img{
             max-height: 200px;
         }
+        a{
+            text-decoration: none;
+        }
+        a.nav-link{
+            font-size: 20px;
+            color: #fff;
+        }
+        .list-group{
+            top: 45px;
+            position: absolute;
+            z-index: 1;
+        }
+
     </style>
 </head>
 <body>
@@ -37,44 +50,45 @@ if(!empty($_SESSION['username'])){
         $error = $resultGetInfo['message'];
     }
     ?>
-        <div class="col-lg-12 col-12">
-            <nav class="navbar navbar-expand-lg navbar-light bg-light">
-                <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                    <a class="navbar-brand mr-auto" href="#">Trang index</a>
-                    <form class="form-inline my-2 my-lg-0 mr-5">
-                        <div class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <img src="<?=$data['image']?>" alt="Anh dai dien" style="max-width: 60px; max-height: 60px;">
-                            </a>
-                            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                <a class="dropdown-item" href="api/chiTietUser.php">Thông tin cá nhân</a>
-                                <a class="dropdown-item" href="api/xemHoaDon.php">Đơn hàng</a>
-                                <a class="dropdown-item" href="api/gioHang.php">Giỏ hàng</a>
-                                <a class="dropdown-item" href="logout.php">Logout</a>
-                            </div>
-                        </div>
-                    </form>
-                </div>
-            </nav>
+    <div class="d-flex justify-content-around col-12 col-lg-12 navbar" style="background: lightblue;">
+        <a class="col-lg-6 col-12 nav-link align-items-center" href="#">Trang quản lý sân bóng mini</a>
+        <div class="col-lg-4 col-12">
+            <input type="text" oninput="suggest(this.value)" class="p-1 form-control col-6 col-lg-6 nameSearch" placeholder="Tìm kiếm sân">
+            <ul class="list-group col-6 col-lg-6 suggestS"></ul></br>
         </div>
+        <form class="form-inline my-2 my-lg-0 col-lg-2 col-12 align-items-center">
+            <div class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <img src="<?=$data['image']?>" alt="Anh dai dien" style="max-width: 60px; max-height: 60px;">
+                </a>
+                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                    <a class="dropdown-item" href="api/chiTietUser.php">Thông tin cá nhân</a>
+                    <a class="dropdown-item" href="api/xemHoaDon.php">Đơn hàng</a>
+                    <a class="dropdown-item" href="api/gioHang.php">Giỏ hàng</a>
+                    <a class="dropdown-item" href="logout.php">Logout</a>
+                </div>
+            </div>
+        </form>
+    </div>
+            
     <?php
 }else{
     ?>
-    <div class="col-lg-12 col-12">
-        <nav class="navbar navbar-expand-lg navbar-light bg-light">
-            <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                <a class="navbar-brand mr-auto" href="#">Trang chủ</a>
-                <form class="form-inline my-2 my-lg-0">
-                    <a class="nav-link" href="login.php">Login</a>
-                </form>
+        <div class="d-flex justify-content-around col-12 col-lg-12 navbar" style="background: lightblue;">
+            <a class="col-lg-6 col-12 nav-link align-items-center" href="#">Trang quản lý sân bóng mini</a>
+            <div class="col-lg-4 col-12">
+                <input type="text" oninput="suggest(this.value)" class="p-1 form-control col-6 col-lg-6 nameSearch" placeholder="Tìm kiếm sân">
+                <ul class="list-group col-6 col-lg-6 suggestS"></ul></br>
             </div>
-        </nav>
-    </div>
+            <form class="form-inline my-2 my-lg-0 col-lg-2 col-12 align-items-center">
+                <a class="nav-link" href="login.php">Login</a>
+            </form>
+        </div>
     <?php
 }
 ?>
 <div class="container">
-        <div class="col-lg-12 col-12 col-md-7">
+        <div class="col-lg-12 col-12 col-md-7 All">
             <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
                 <ol class="carousel-indicators">
                     <li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>
@@ -155,5 +169,39 @@ if(!empty($_SESSION['username'])){
 <div class="footer col-lg-12 col-12">
     <p>Quản lý sân bóng đá mini 2021.</p>
 </div>
+<script>
+    let suggestions = document.querySelector(".suggestS");
+
+    function suggest(value) {  
+        sendRequest(value);
+    }
+
+    function sendRequest(word){
+        suggestions.innerHTML = "";
+
+        const xhr = new XMLHttpRequest();
+
+        xhr.addEventListener('load', e => {
+            if(xhr.status === 200 && xhr.readyState === 4){
+                let response = xhr.responseText;
+                response = JSON.parse(response);
+
+                if(response.code === 0){
+                    let data = response.data;
+                    data.forEach(item =>{
+                        const li = document.createElement('li')
+                        li.className = 'list-group-item'
+                        const a = `<a href="api/chiTietSan.php?tenSan=${item.tenSan}">${item.tenSan}</a>`
+                        li.innerHTML = a;
+                        suggestions.appendChild(li)
+                    })
+                }
+            }
+        })
+
+        xhr.open('GET', 'sever.php?word=' + encodeURIComponent(word),true);
+        xhr.send();
+    }
+</script>
 </body>
 </html>

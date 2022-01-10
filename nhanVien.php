@@ -5,6 +5,13 @@ if(!$_SESSION["username"]){
     header("Location: login.php");
 }
 
+$justUsername = $_SESSION["username"];
+$resultJust = get_info_user($justUsername);
+
+if($resultJust['data']['capBac'] == "khachhang"){
+    header("Location: index.php");
+}
+
 $error = "";
 $success = "";
 
@@ -23,7 +30,15 @@ $success = "";
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-
+    <style>
+        a{
+        text-decoration: none;
+        }
+        a.nav-link{
+            font-size: 20px;
+            color: #fff;
+        }
+    </style>
 </head>
 <body>
 <?php    
@@ -34,21 +49,20 @@ $success = "";
         $error = $resultGetInfo['message'];
     }
     ?>
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
-        <div class="collapse navbar-collapse" id="navbarSupportedContent">
-            <a class="navbar-brand mr-auto" href="#">Trang nhân viên</a>
-            <form class="form-inline my-2 my-lg-0">
-                <div class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        <img src="<?=$data['image']?>" alt="Anh dai dien" style="max-width: 60px;">
-                    </a>
-                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                        <a class="dropdown-item" href="logout.php">Logout</a>
-                    </div>
+    <div class="d-flex justify-content-around col-12 col-lg-12 navbar" style="background: lightblue;">
+        <a class="col-lg-10 col-6 nav-link align-items-center" href="#">Trang quản lý sân bóng mini</a>
+        <form class="form-inline my-2 my-lg-0 col-lg-2 col-6 align-items-center">
+            <div class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <img src="<?=$data['image']?>" alt="Anh dai dien" style="max-width: 60px; max-height: 60px;">
+                </a>
+                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                    <a class="dropdown-item" href="api/chiTietUser.php">Thông tin cá nhân</a>
+                    <a class="dropdown-item" href="logout.php">Logout</a>
                 </div>
-            </form>
-        </div>
-    </nav>
+            </div>
+        </form>
+</div>
     <?php
 ?>
 
@@ -68,6 +82,15 @@ $success = "";
                 <a href="api/checkHoaDon.php"><img src="images/checkin.jpeg" style="max-height: 400px;" class="card-img-top" alt="hình quản lý hoá đơn"></a>
                 <div class="card-body">
                     <h1 class="card-title">Kiểm tra hoá đơn</h1>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-6 col-12 col-md-6">
+            <div class="card">
+                <a href="api/thongKeSanDatNhieu.php"><img src="images/datNhieu.jpeg" style="max-height: 400px;" class="card-img-top" alt="hình quản lý hoá đơn"></a>
+                <div class="card-body">
+                    <h1 class="card-title">Thống kê sân đặt nhiều</h1>
                 </div>
             </div>
         </div>

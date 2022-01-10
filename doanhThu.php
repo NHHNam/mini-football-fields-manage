@@ -31,6 +31,13 @@ if(!$_SESSION["username"]){
             margin-bottom: 30px;
             margin-top: 30px;
         }
+        a{
+            text-decoration: none;
+        }
+        a.nav-link{
+            font-size: 20px;
+            color: #fff;
+        }
     </style>
 </head>
 <body>
@@ -43,21 +50,22 @@ if(!$_SESSION["username"]){
         $error = $resultGetInfo['message'];
     }
 ?>
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
-        <div class="collapse navbar-collapse" id="navbarSupportedContent">
-            <a class="navbar-brand mr-auto" href="#">Trang Admin</a>
-            <form class="form-inline my-2 my-lg-0">
-                <div class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        <img src="<?=$data['image']?>" alt="Anh dai dien" style="max-width: 60px;">
-                    </a>
-                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                        <a class="dropdown-item" href="logout.php">Logout</a>
-                    </div>
+    <div class="d-flex justify-content-around col-12 col-lg-12 navbar" style="background: lightblue;">
+        <a class="col-lg-10 col-6 nav-link align-items-center" href="#">Trang quản lý sân bóng mini</a>
+        <form class="form-inline my-2 my-lg-0 col-lg-2 col-6 align-items-center">
+            <div class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <img src="<?=$data['image']?>" alt="Anh dai dien" style="max-width: 60px; max-height: 60px;">
+                </a>
+                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                    <a class="dropdown-item" href="api/chiTietUser.php">Thông tin cá nhân</a>
+                    <a class="dropdown-item" href="api/xemHoaDon.php">Đơn hàng</a>
+                    <a class="dropdown-item" href="api/gioHang.php">Giỏ hàng</a>
+                    <a class="dropdown-item" href="logout.php">Logout</a>
                 </div>
-            </form>
-        </div>
-    </nav>
+            </div>
+        </form>
+    </div>
     <div class="container">
         <a style="text-decoreation: none;" href="admin.php"><i class="fas fa-arrow-circle-left"></i></a>
         <p>Thống kê đơn hàng theo: <span id="text-date"></span></p>

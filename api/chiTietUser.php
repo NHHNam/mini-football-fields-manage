@@ -33,6 +33,13 @@
         a i{
             font-size: 30px;
         }
+        a{
+            text-decoration: none;
+        }
+        a.nav-link{
+            font-size: 20px;
+            color: #fff;
+        }
         #wrap-form{
             display: flex;
             justify-content: center;
@@ -101,32 +108,45 @@ if(!empty($_SESSION['username'])){
         $error = $resultGetInfo['message'];
     }
     ?>
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
-        <div class="collapse navbar-collapse" id="navbarSupportedContent">
-            <a class="navbar-brand mr-auto" href="../index.php">Trang index</a>
-            <form class="form-inline my-2 my-lg-0">
-                <div class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        <img src="<?="../".$data['image']?>" alt="Anh dai dien" style="max-width: 60px;">
-                    </a>
-                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                        <a class="dropdown-item" href="../logout.php">Logout</a>
-                    </div>
+    <div class="d-flex justify-content-around col-12 col-lg-12 navbar" style="background: lightblue;">
+        <a class="col-lg-10 col-6 nav-link align-items-center" href="#">Trang quản lý sân bóng mini</a>
+        <form class="form-inline my-2 my-lg-0 col-lg-2 col-6 align-items-center">
+            <div class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <img src="<?="../".$data['image']?>" alt="Anh dai dien" style="max-width: 60px; max-height: 60px;">
+                </a>
+                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                    <a class="dropdown-item" href="chiTietUser.php">Thông tin cá nhân</a>
+                    <a class="dropdown-item" href="../logout.php">Logout</a>
                 </div>
-            </form>
-        </div>
-    </nav>
+            </div>
+        </form>
+    </div>
     <?php
 }
 ?>
-<div class="container">
+<div class="container col-12 col-lg-12">
     <div id="wrap-form">
         <div id="wrapper">
             <div class="form-group">
-                <img src="<?="../".$data['image']?>" alt="">
+                <img src="<?="../".$data['image']?>" class="col-12" alt="">
             </div>
             <div class="header">
-                <a style="text-decoreation: none;" href="../index.php"><i class="fas fa-arrow-circle-left"></i></a>
+                <?php 
+                    if($data['capBac'] == "khachhang"){
+                        ?>
+                            <a style="text-decoreation: none;" href="../index.php"><i class="fas fa-arrow-circle-left"></i></a>
+                        <?php
+                    }else if($data['capBac'] == "nhanvien"){
+                        ?>
+                            <a style="text-decoreation: none;" href="../nhanVien.php"><i class="fas fa-arrow-circle-left"></i></a>
+                        <?php
+                    }else{
+                        ?>
+                            <a style="text-decoreation: none;" href="../admin.php"><i class="fas fa-arrow-circle-left"></i></a>
+                        <?php
+                    }
+                ?>
                 <p>Thông tin khách hàng</p>
             </div>
             <div class="details">

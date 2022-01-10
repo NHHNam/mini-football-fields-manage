@@ -66,14 +66,20 @@ require_once('db.php');
         $email = $_POST['emailKH'];
         $sdt = $_POST['sdtKH'];
         $address = $_POST['addrKH'];
-        $gender = $_POST['gender'];
-        $hinh = "images/".$_FILES['hinhDaiDien']['name'];
-        move_uploaded_file($_FILES['hinhDaiDien']['tmp_name'], $hinh);
-        $result1 = register($name, $email, $sdt, $address, $gender, $username, $pwd, $hinh);
-        if($result1['code'] == 0){
-            $success = $result1['message'];
+        if(!isset($_POST['gender'])){
+            $error = "Bạn chưa chọn giới tính";
+        }else if(empty($_FILES['hinhDaiDien']['name'])){
+            $error = "Bạn chưa chọn hình đại diện";
         }else{
-            $error = $result1['message'];
+            $gender = $_POST['gender'];
+            $hinh = "images/".$_FILES['hinhDaiDien']['name'];
+            move_uploaded_file($_FILES['hinhDaiDien']['tmp_name'], $hinh);
+            $result1 = register($name, $email, $sdt, $address, $gender, $username, $pwd, $hinh);
+            if($result1['code'] == 0){
+                $success = $result1['message'];
+            }else{
+                $error = $result1['message'];
+            }
         }
     }
 ?>
@@ -90,28 +96,28 @@ require_once('db.php');
                         <div class="input-group-prepend">
                             <span class="input-group-text"><i class="fas fa-user"></i></span>
                         </div>
-                        <input class="input-group-text form-control" type="text" name="nameKH" placeholder="Nhập tên người dùng">
+                        <input class="input-group-text form-control" type="text" name="nameKH" value="<?php if(!empty($name)) echo $name;?>" placeholder="Nhập tên người dùng">
                     </div>
 
                     <div class="input-group form-group">
                         <div class="input-group-prepend">
                             <span class="input-group-text"><i class="far fa-envelope"></i></span>
                         </div>
-                        <input class="input-group-text form-control" type="text" name="emailKH" placeholder="Nhập email người dùng">
+                        <input class="input-group-text form-control" type="text" name="emailKH" value="<?php if(!empty($email)) echo $email;?>" placeholder="Nhập email người dùng">
                     </div>
 
                     <div class="input-group form-group">
                         <div class="input-group-prepend">
                             <span class="input-group-text"><i class="fas fa-phone"></i></span>
                         </div>
-                        <input class="input-group-text form-control" type="text" name="sdtKH" placeholder="Nhập số điện thoại người dùng">
+                        <input class="input-group-text form-control" type="text" name="sdtKH" value="<?php if(!empty($sdt)) echo $sdt;?>" placeholder="Nhập số điện thoại người dùng">
                     </div>
 
                     <div class="input-group form-group">
                         <div class="input-group-prepend">
                             <span class="input-group-text"><i class="fas fa-home"></i></span>
                         </div>
-                        <input class="input-group-text form-control" type="text" name="addrKH" placeholder="Nhập địa chỉ người dùng">
+                        <input class="input-group-text form-control" type="text" name="addrKH" value="<?php if(!empty($address)) echo $address;?>" placeholder="Nhập địa chỉ người dùng">
                     </div>
 
                     <div class="input-group form-group">
@@ -132,14 +138,14 @@ require_once('db.php');
                         <div class="input-group-prepend">
                             <span class="input-group-text"><i class="fas fa-user-circle"></i></span>
                         </div>
-                        <input class="input-group-text form-control" type="text" name="accountname" placeholder="Nhập tên tài khoản">
+                        <input class="input-group-text form-control" type="text" name="accountname" value="<?php if(!empty($username)) echo $username;?>" placeholder="Nhập tên tài khoản">
                     </div>
 
                     <div class="input-group form-group">
                         <div class="input-group-prepend">
                             <span class="input-group-text"><i class="fas fa-key"></i></span>
                         </div>
-                        <input class="input-group-text form-control" type="password" name="pwd" placeholder="Nhập mật khẩu">
+                        <input class="input-group-text form-control" type="password" name="pwd" value="<?php if(!empty($pwd)) echo $pwd;?>" placeholder="Nhập mật khẩu">
                     </div>
 
                     <div class="input-group form-group">

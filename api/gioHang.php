@@ -6,6 +6,7 @@
     }
     $error = "";
     $success = "";
+    $curDate = date("Y-m-d");
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -36,6 +37,13 @@
             text-decoration: none;
             color: #fff;
         }
+        a{
+            text-decoration: none;
+        }
+        a.nav-link{
+            font-size: 20px;
+            color: #fff;
+        }
     </style>
 </head>
 <body>
@@ -48,21 +56,20 @@ if(!empty($_SESSION['username'])){
         $error = $resultGetInfo['message'];
     }
     ?>
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
-        <div class="collapse navbar-collapse" id="navbarSupportedContent">
-            <a class="navbar-brand mr-auto" href="../index.php">Trang index</a>
-            <form class="form-inline my-2 my-lg-0">
-                <div class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        <img src="<?="../".$data['image']?>" alt="Anh dai dien" style="max-width: 60px;">
-                    </a>
-                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                        <a class="dropdown-item" href="../logout.php">Logout</a>
-                    </div>
+    <div class="d-flex justify-content-around col-12 col-lg-12 navbar" style="background: lightblue;">
+        <a class="col-lg-10 col-6 nav-link align-items-center" href="#">Trang quản lý sân bóng mini</a>
+        <form class="form-inline my-2 my-lg-0 col-lg-2 col-6 align-items-center">
+            <div class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <img src="<?="../".$data['image']?>" alt="Anh dai dien" style="max-width: 60px; max-height: 60px;">
+                </a>
+                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                    <a class="dropdown-item" href="chiTietUser.php">Thông tin cá nhân</a>
+                    <a class="dropdown-item" href="../logout.php">Logout</a>
                 </div>
-            </form>
-        </div>
-    </nav>
+            </div>
+        </form>
+    </div>
     <?php
 }
 ?>
@@ -96,6 +103,7 @@ if(!empty($_SESSION['username'])){
                         <td><?=$a['thoigian']?></td>
                         <td><?=product_price($a['thoigian'] * $a['giaSan'])?></td>
                         <form method="post">
+                            <input type="hidden" name="username" value="<?=$_SESSION['username']?>" />
                             <input type="hidden" name="maSanToDelete" value="<?=$a['maSan']?>">
                             <td><button class="btn btn-danger" name="del" type="submit">Delete</button></td>
                         </form>
@@ -134,6 +142,7 @@ if(!empty($_SESSION['username'])){
                             <td><?=$a['priceDrink']?></td>
                             <td><?=product_price($a['soluong'] * $a['priceDrink'])?></td>
                             <form method="post">
+                                <input type="hidden" name="username" value="<?=$_SESSION['username']?>" />
                                 <input type="hidden" name="maDrinkToDel" value="<?=$a['maDrink']?>" />
                                 <td><button class="btn btn-danger" name="delDrink" type="submit">Delete</button></td>
                             </form>
@@ -153,15 +162,17 @@ if(!empty($_SESSION['username'])){
 <?php
     if(isset($_POST['del'])){
         $maSanToDel = $_POST['maSanToDelete'];
-        $result1 = delete_san_gio_hang($maSanToDel);
+        $usernameKH = $_POST['username'];
+        $result1 = delete_san_gio_hang($maSanToDel, $curDate, $usernameKH);
         if($result1['code'] == 0){
             $success = $result1['message'];
         }else{
             $error = $result1['message'];
         }
     }else if(isset($_POST['delDrink'])){
+        $usernameKH = $_POST['username'];
         $maDrinkToDel = $_POST['maDrinkToDel'];
-        $result2 = delete_nuoc_giohang($maDrinkToDel);
+        $result2 = delete_nuoc_giohang($maDrinkToDel,$curDate, $usernameKH);
         if($result2['code'] == 0){
             $success = $result2['message'];
         }else{

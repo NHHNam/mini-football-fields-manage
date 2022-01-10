@@ -1,10 +1,5 @@
 <?php
 session_start();
-// remove all session variables
-session_unset();
-
-// destroy the session
-session_destroy();
-
-header("Location: index.php");
+unset($_SESSION["username"]);
+header("Location:index.php");
 ?>

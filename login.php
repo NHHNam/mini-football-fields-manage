@@ -48,36 +48,26 @@ $checkStaff = "nv";
 if(isset($_POST['login'])){
     $accountName = $_POST['accountName'];
     $pwd = $_POST['pwd'];
-    if($accountName == "admin"){
-        $result = login_admin($accountName, $pwd);
-        if($result['code'] == 0){
-            $data = $result['data'];
+    $result = login($accountName, $pwd);
+    if($result['code'] == 0){
+        $data = $result['data'];
+        if($data['capBac'] == "quanly"){
             $_SESSION['username'] = $data['username'];
             header("Location: admin.php");
             exit();
-        }else{
-            $error = $result['message'];
-        }
-    }else if(strpos($accountName, $checkStaff) !== false){
-        $result = login_staff($accountName, $pwd);
-        if($result['code'] == 0){
-            $data = $result['data'];
+        }else if($data['capBac'] == "nhanvien"){
             $_SESSION['username'] = $data['username'];
             header("Location: nhanVien.php");
             exit();
-        }else{
-            $error = $result['message'];
-        }
-    }else{
-        $result = login($accountName, $pwd);
-        if($result['code'] == 0){
-            $data = $result['data'];
+        }else if($data['capBac'] == "khachhang"){
             $_SESSION['username'] = $data['username'];
             header("Location: index.php");
             exit();
         }else{
-            $error = $result['message'];
+            $error = "User is not exists";
         }
+    }else{
+        $error = $result['message'];
     }
 }
 ?>

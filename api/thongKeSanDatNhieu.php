@@ -4,6 +4,8 @@ require_once("../db.php");
 if(!$_SESSION["username"]){
     header("Location: ../login.php");
 }
+$success = "";
+$error = "";
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -19,10 +21,21 @@ if(!$_SESSION["username"]){
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.4/css/all.css" integrity="sha384-DyZ88mC6Up2uqS4h/KRgHuoeGwBcD4Ng9SiP4dIRy0EXTlnuz47vAwmeGwVChigm" crossorigin="anonymous">
 </head>
 <style>
+    .nav-item {
+        margin-right: 80px;
+    }
+    .nav-item .dropdown-toggle {
+        max-width: 50px;
+    }
     a i{
         font-size: 30px;
         margin-bottom: 30px;
         margin-top: 30px;
+    }
+
+    button.btn a{
+        text-decoration: none;
+        color: #fff;
     }
     a{
         text-decoration: none;
@@ -34,8 +47,7 @@ if(!$_SESSION["username"]){
 </style>
 <body>
 <?php
-$error = "";
-$success = "";
+
 $resultGetInfo = get_all_admin($_SESSION['username']);
 if($resultGetInfo['code'] == 0){
     $data = $resultGetInfo['data'];
@@ -58,53 +70,36 @@ if($resultGetInfo['code'] == 0){
         </form>
 </div>
 <div class="container">
-    <a style="text-decoreation: none; width: 50px;" href="../admin.php"><i class="fas fa-arrow-circle-left"></i></a>
+    <a style="text-decoration: none;" href="../admin.php"><i class="fas fa-arrow-circle-left"></i></a>
     <table class="table">
         <thead>
         <tr>
-            <th></th>
-            <th>Image</th>
-            <th>Name</th>
-            <th>Price</th>
-            <th style="text-align: center;" colspan="2">Actions</th>
+            <th>STT</th>
+            <th>Tên Sân</th>
+            <th>Số lượng đặt</th>
         </tr>
         </thead>
         <tbody id="table-body">
         <?php
-        $result = get_all_drink();
-        $stt = 1;
+        $result = thong_ke_san_dat_nhieu();
+        $i = 1;
         if($result['code'] == 0){
-            $dataDrink = $result['data'];
-            foreach($dataDrink as $a){
+            $dataSan = $result['data'];
+            foreach($dataSan as $a){
                 ?>
                 <tr>
-                    <td><?=$stt?></td>
-                    <td><img src="
-                                    <?php
-                        echo "../".$a['imageDrink'];
-                        ?>
-                                " style="max-width: 80px;"></td>
-                    <td><?=$a['nameDrink']?></td>
-                    <td><?=$a['priceDrink']?></td>
-                    <form action="../editDrink.php" method="post">
-                        <input type="hidden" name="maDrink" value="<?=$a['maDrink']?>">
-                        <td style="text-align: center;"><button class="btn btn-success" type="submit">Edit</button></td>
-                    </form>
-
-                    <form action="xoaDrink.php" method="post">
-                        <input type="hidden" name="maDrink" value="<?=$a['maDrink']?>">
-                        <td style="text-align: center;"><button class="btn btn-danger" type="submit">Delete</button></td>
-                    </form>
+                    <td><?=$i?></td>
+                    <td><?=$a['tenSan']?></td>
+                    <td><?=$a['SL']?></td>
                 </tr>
                 <?php
-                $stt+=1;
+                $i++;
             }
         }
         ?>
 
         </tbody>
     </table>
-    <button class="btn btn-success"><a style="text-decoration: none; color:white;" href="../themDrink.php">Thêm nước mới</a></button>
 </div>
 </body>
 </html>

@@ -30,6 +30,13 @@ if(!$_SESSION["username"]){
             margin-bottom: 30px;
             margin-top: 30px;
         }
+        a{
+            text-decoration: none;
+        }
+        a.nav-link{
+            font-size: 20px;
+            color: #fff;
+        }
     </style>
 </head>
 <body>
@@ -43,30 +50,34 @@ if($resultGetInfo['code'] == 0){
     $error = $resultGetInfo['message'];
 }
 ?>
-<nav class="navbar navbar-expand-lg navbar-light bg-light">
-    <div class="collapse navbar-collapse" id="navbarSupportedContent">
-        <a class="navbar-brand mr-auto" href="#">Trang Admin</a>
-        <form class="form-inline my-2 my-lg-0">
+<div class="d-flex justify-content-around col-12 col-lg-12 navbar" style="background: lightblue;">
+        <a class="col-lg-10 col-6 nav-link align-items-center" href="#">Trang quản lý sân bóng mini</a>
+        <form class="form-inline my-2 my-lg-0 col-lg-2 col-6 align-items-center">
             <div class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    <img src="<?=$data['image']?>" alt="Anh dai dien" style="max-width: 60px;">
+                    <img src="<?=$data['image']?>" alt="Anh dai dien" style="max-width: 60px; max-height: 60px;">
                 </a>
                 <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                    <a class="dropdown-item" href="api/chiTietUser.php">Thông tin cá nhân</a>
                     <a class="dropdown-item" href="logout.php">Logout</a>
                 </div>
             </div>
         </form>
-    </div>
-</nav>
+</div>
 
 <?php
     if(isset($_POST['addUser'])){
-        $username = "nv". $_POST['accountname'];
-        $name = $_POST['nameKH'];
-        $pwd = "nv". $_POST['accountname'];
+        $username = "nv".$_POST['accountname'];
+        $name = $_POST['nameNV'];
+        $pwd = "nv".$_POST['accountname'];
+
+        $email = $_POST['emailNV'];
+        $sdt = $_POST['sdtNV'];
+        $address = $_POST['addrNV'];
+        $gender = $_POST['gender'];
         $hinh = "images/".$_FILES['hinhDaiDien']['name'];
         move_uploaded_file($_FILES['hinhDaiDien']['tmp_name'], $hinh);
-        $result1 = add_new_staff($name, $username, $pwd, $hinh);
+        $result1 = add_new_staff($name, $email, $sdt, $address, $gender, $username, $pwd, $hinh);
         if($result1['code'] == 0){
             $success = $result1['message'];
         }else{
@@ -85,15 +96,51 @@ if($resultGetInfo['code'] == 0){
                         <div class="input-group-prepend">
                             <span class="input-group-text"><i class="fas fa-user"></i></span>
                         </div>
-                        <input class="input-group-text form-control" type="text" name="nameKH" placeholder="Nhập tên của nhân viên">
+                        <input class="input-group-text form-control" type="text" name="nameNV" placeholder="Nhập tên người dùng">
+                    </div>
+
+                    <div class="input-group form-group">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text"><i class="far fa-envelope"></i></span>
+                        </div>
+                        <input class="input-group-text form-control" type="text" name="emailNV" placeholder="Nhập email người dùng">
+                    </div>
+
+                    <div class="input-group form-group">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text"><i class="fas fa-phone"></i></span>
+                        </div>
+                        <input class="input-group-text form-control" type="text" name="sdtNV" placeholder="Nhập số điện thoại người dùng">
+                    </div>
+
+                    <div class="input-group form-group">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text"><i class="fas fa-home"></i></span>
+                        </div>
+                        <input class="input-group-text form-control" type="text" name="addrNV" placeholder="Nhập địa chỉ người dùng">
+                    </div>
+
+                    <div class="input-group form-group">
+                        <div class="input-group-prepend mr-1">
+                            <span class="input-group-text"><i class="fas fa-transgender"></i></span>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="gender"  value="Nam">
+                            <label class="form-check-label" for="inlineRadio1">Nam</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="gender"  value="Nữ">
+                            <label class="form-check-label" for="inlineRadio2">Nữ</label>
+                        </div>
                     </div>
 
                     <div class="input-group form-group">
                         <div class="input-group-prepend">
                             <span class="input-group-text"><i class="fas fa-user-circle"></i></span>
                         </div>
-                        <input class="input-group-text form-control" type="text" name="accountname" placeholder="Nhập tên tài khoản của nhân viên">
+                        <input class="input-group-text form-control" type="text" name="accountname" placeholder="Nhập tên tài khoản">
                     </div>
+
 
                     <div class="input-group form-group">
                         <div class="input-group-prepend">

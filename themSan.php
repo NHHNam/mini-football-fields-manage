@@ -30,6 +30,13 @@ if(!$_SESSION["username"]){
             margin-bottom: 30px;
             margin-top: 30px;
         }
+        a{
+            text-decoration: none;
+        }
+        a.nav-link{
+            font-size: 20px;
+            color: #fff;
+        }
     </style>
 </head>
 <body>
@@ -42,21 +49,20 @@ if($resultGetInfo['code'] == 0){
     $error = $resultGetInfo['message'];
 }
 ?>
-<nav class="navbar navbar-expand-lg navbar-light bg-light">
-    <div class="collapse navbar-collapse" id="navbarSupportedContent">
-        <a class="navbar-brand mr-auto" href="#">Trang Admin</a>
-        <form class="form-inline my-2 my-lg-0">
+<div class="d-flex justify-content-around col-12 col-lg-12 navbar" style="background: lightblue;">
+        <a class="col-lg-10 col-6 nav-link align-items-center" href="#">Trang quản lý sân bóng mini</a>
+        <form class="form-inline my-2 my-lg-0 col-lg-2 col-6 align-items-center">
             <div class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    <img src="<?=$data['image']?>" alt="Anh dai dien" style="max-width: 60px;">
+                    <img src="<?=$data['image']?>" alt="Anh dai dien" style="max-width: 60px; max-height: 60px;">
                 </a>
                 <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                    <a class="dropdown-item" href="api/chiTietUser.php">Thông tin cá nhân</a>
                     <a class="dropdown-item" href="logout.php">Logout</a>
                 </div>
             </div>
         </form>
-    </div>
-</nav>
+</div>
 
 <?php
 $error = "";
@@ -65,9 +71,11 @@ if(isset($_POST['addSan'])){
     $nameSan = $_POST['nameSan'];
     $maSan = $_POST['maSan'];
     $priceSan = $_POST['priceSan'];
+    $addrSan = $_POST['addrSan'];
+    $descSan = $_POST['descSan'];
     $hinhSan = "images/". $_FILES['hinhSan']['name'];
     if(move_uploaded_file($_FILES['hinhSan']['tmp_name'], $hinhSan)){
-        $resultAddSan = add_new_san($maSan, $nameSan, $priceSan, $hinhSan);
+        $resultAddSan = add_new_san($maSan, $nameSan, $priceSan, $hinhSan, $addrSan, $descSan);
         if($resultAddSan['code'] == 0){
             $success = $resultAddSan['message'];
         }else{
@@ -77,7 +85,7 @@ if(isset($_POST['addSan'])){
 }
 ?>
 <div class="container">
-    <a style="text-decoreation: none;" href="api/dsSanBong.php"><i class="fas fa-arrow-circle-left"></i></a>
+    <a style="text-decoration: none;" href="api/dsSanBong.php"><i class="fas fa-arrow-circle-left"></i></a>
     <div class="d-flex justify-content-center">
         <div class="card">
             <div class="card-body">
@@ -102,6 +110,20 @@ if(isset($_POST['addSan'])){
                             <span class="input-group-text"><i class="fas fa-money-bill-wave"></i></span>
                         </div>
                         <input class="input-group-text form-control" type="number" name="priceSan" placeholder="Nhập giá thuê">
+                    </div>
+
+                    <div class="input-group form-group">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text"><i class="fas fa-map"></i></span>
+                        </div>
+                        <input class="input-group-text form-control" type="text" name="addrSan" placeholder="Nhập địa chỉ sân">
+                    </div>
+
+                    <div class="input-group form-group">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text"><i class="fas fa-pen"></i></span>
+                        </div>
+                        <textarea class="input-group-text form-control" name="descSan" placeholder="Nhập chi tiết sân"></textarea>
                     </div>
 
                     <div class="input-group form-group">

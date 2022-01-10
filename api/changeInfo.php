@@ -63,29 +63,32 @@
             border-bottom: 1px solid #ccc;
             line-height: 50px;
         }
+        a{
+            text-decoration: none;
+        }
+        a.nav-link{
+            font-size: 20px;
+            color: #fff;
+        }
     </style>
 </head>
 <body>
 
-<div class="col-lg-12 col-12">
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
-        <div class="collapse navbar-collapse" id="navbarSupportedContent">
-            <a class="navbar-brand mr-auto" href="index.php">Trang chủ</a>
-            <form class="form-inline my-2 my-lg-0">
-                <div class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        <img src="<?="../".$data['image']?>" alt="Anh dai dien" style="max-width: 60px; max-height: 60px;">
-                    </a>
-                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                        <a class="dropdown-item" href="xemHoaDon.php">Đơn hàng</a>
-                        <a class="dropdown-item" href="gioHang.php">Giỏ hàng</a>
-                        <a class="dropdown-item" href="../logout.php">Logout</a>
-                    </div>
-                </div>
-            </form>
+<div class="d-flex justify-content-around col-12 col-lg-12 navbar" style="background: lightblue;">
+    <a class="col-lg-10 col-6 nav-link align-items-center" href="#">Trang quản lý sân bóng mini</a>
+    <form class="form-inline my-2 my-lg-0 col-lg-2 col-6 align-items-center">
+        <div class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <img src="<?="../".$data['image']?>" alt="Anh dai dien" style="max-width: 60px; max-height: 60px;">
+            </a>
+            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                <a class="dropdown-item" href="chiTietUser.php">Thông tin cá nhân</a>
+                <a class="dropdown-item" href="../logout.php">Logout</a>
+            </div>
         </div>
-    </nav>
+    </form>
 </div>
+
 <?php 
     if(isset($_POST['changeInfo'])){
         $nameChange = $_POST['name'];

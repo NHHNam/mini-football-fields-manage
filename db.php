@@ -18,28 +18,11 @@
         return $conn;
     }
 
-    function login_admin($username,$password){
-        $conn = open_database();
-        $sql = "SELECT * FROM admin WHERE username = ? AND password = ?";
-        $stmt = $conn->prepare($sql);
-        $stmt->bind_param("ss",$username,$password);
-        if(!$stmt->execute()){
-            return array('code' => 1, 'message' => error());
-        }
-        $result = $stmt->get_result();
-        $data = $result->fetch_assoc();
-
-        if($result->num_rows == 0){
-            return array('code' => 2, 'message' => "User not exist");
-        }
-        return array('code' => 0, 'message' =>'','data' =>$data);
-    }
-
     function login($username, $password){
         $conn = open_database();
-        $sql = "SELECT * FROM khachhang WHERE username = ? AND password = ?";
+        $sql = "SELECT * FROM user WHERE username = ?";
         $stmt = $conn->prepare($sql);
-        $stmt->bind_param("ss",$username,$password);
+        $stmt->bind_param("s",$username);
         if(!$stmt->execute()){
             return array('code' => 1, 'message' => error());
         }
@@ -49,31 +32,19 @@
         if($result->num_rows == 0){
             return array('code' => 2, 'message' => "User not exist");
         }
-        return array('code' => 0, 'message' =>'','data' =>$data);
-    }
-
-    function login_staff($username, $password){
-        $conn = open_database();
-        $sql = "SELECT * FROM nhanvien WHERE username = ? AND password = ?";
-        $stmt = $conn->prepare($sql);
-        $stmt->bind_param("ss",$username,$password);
-        if(!$stmt->execute()){
-            return array('code' => 1, 'message' => error());
-        }
-        $result = $stmt->get_result();
-        $data = $result->fetch_assoc();
-
-        if($result->num_rows == 0){
-            return array('code' => 2, 'message' => "Nhân viên không tồn tại");
+        $hash_password = $data['password'];
+        if(!password_verify($password, $hash_password)){
+            return array('code' => 2, 'message' => 'Password or Username is not exits'); // password không khớp
         }
         return array('code' => 0, 'message' =>'','data' =>$data);
     }
 
     function get_all_admin($username){
         $conn = open_database();
-        $sql = "SELECT * FROM admin WHERE username = ?";
+        $capBac = "quanly";
+        $sql = "SELECT * FROM user WHERE username = ? and capBac = ?";
         $stmt = $conn->prepare($sql);
-        $stmt->bind_param("s",$username);
+        $stmt->bind_param("ss",$username, $capBac);
         if(!$stmt->execute()){
             return array('code' => 1, 'message' => error());
         }
@@ -87,7 +58,7 @@
 
     function get_all_khachhang($username){
         $conn = open_database();
-        $sql = "SELECT * FROM khachhang WHERE username = ?";
+        $sql = "SELECT * FROM user WHERE username = ?";
         $stmt = $conn->prepare($sql);
         $stmt->bind_param("s",$username);
         if(!$stmt->execute()){
@@ -103,9 +74,10 @@
 
     function get_all_staff($username){
         $conn = open_database();
-        $sql = "SELECT * FROM nhanvien WHERE username = ?";
+        $capBac = "nhanvien";
+        $sql = "SELECT * FROM user WHERE username = ? and capBac = ?";
         $stmt = $conn->prepare($sql);
-        $stmt->bind_param("s",$username);
+        $stmt->bind_param("ss",$username, $capBac);
         if(!$stmt->execute()){
             return array('code' => 1, 'message' => error());
         }
@@ -119,7 +91,7 @@
 
     function get_info($id){
         $conn = open_database();
-        $sql = "SELECT * FROM khachhang WHERE id = ?";
+        $sql = "SELECT * FROM user WHERE id = ?";
         $stmt = $conn->prepare($sql);
         $stmt->bind_param("i", $id);
         if(!$stmt->execute()){
@@ -135,7 +107,7 @@
 
     function get_info_staff($id){
         $conn = open_database();
-        $sql = "SELECT * FROM nhanvien WHERE id = ?";
+        $sql = "SELECT * FROM user WHERE id = ?";
         $stmt = $conn->prepare($sql);
         $stmt->bind_param("i", $id);
         if(!$stmt->execute()){
@@ -170,7 +142,7 @@
 
     function get_image_banner(){
         $conn = open_database();
-        $sql = "SELECT * FROM sanbong";
+        $sql = "SELECT * FROM sanbong order by id desc";
         $stmt = $conn->prepare($sql);
 
         if(!$stmt->execute()){
@@ -187,9 +159,10 @@
 
     function get_all_user_khachhang(){
         $conn = open_database();
-        $sql = "SELECT * FROM khachhang";
+        $capBac = "khachhang";
+        $sql = "SELECT * FROM user where capBac = ?";
         $stmt = $conn->prepare($sql);
-
+        $stmt->bind_param('s', $capBac);
         if(!$stmt->execute()){
             return array('code' => 1, 'message' => error());
         }
@@ -223,7 +196,7 @@
 
     function check_user_exists($username){
         $conn = open_database();
-        $sql = "SELECT * FROM khachhang WHERE username = ?";
+        $sql = "SELECT * FROM user WHERE username = ?";
         $stmt = $conn->prepare($sql);
         $stmt->bind_param("s",$username);
         if(!$stmt->execute()){
@@ -239,9 +212,10 @@
 
     function check_staff_exists($username){
         $conn = open_database();
-        $sql = "SELECT * FROM nhanvien WHERE username = ?";
+        $capBac = "nhanvien";
+        $sql = "SELECT * FROM user WHERE username = ? and capBac = ?";
         $stmt = $conn->prepare($sql);
-        $stmt->bind_param("s",$username);
+        $stmt->bind_param("ss",$username, $capBac);
         if(!$stmt->execute()){
             return array('code' => 1, 'message' => error());
         }
@@ -253,14 +227,15 @@
         }
     }
 
-    function add_new_san($maSan, $tenSan, $giaSan, $imageSan){
+    function add_new_san($maSan, $tenSan, $giaSan, $imageSan, $address, $description){
         if(check_san_exists($tenSan) == true){
             return array('code' => 2, 'message'=>'Sân đã tồn tại vui lòng nhập tên sân khác');
         }
+        $SL = 0;
         $conn = open_database();
-        $sql = "INSERT INTO sanbong (maSan, tenSan, giaSan, imageSan) VALUES(?,?,?,?)";
+        $sql = "INSERT INTO sanbong (maSan, tenSan, giaSan, imageSan, SL, addressSan, descSan) VALUES(?,?,?,?,?,?,?)";
         $stmt = $conn->prepare($sql);
-        $stmt->bind_param('ssis', $maSan, $tenSan, $giaSan, $imageSan);
+        $stmt->bind_param('ssisiss', $maSan, $tenSan, $giaSan, $imageSan, $SL, $address, $description);
 
         if(!$stmt->execute()){
             return array('code' => 1, 'message' => error());
@@ -314,13 +289,31 @@
     }
 
     function register($name, $email, $sdt, $diachi, $gender, $username, $pwd, $image){
+        $capBac = "khachhang";
         if(check_user_exists($username) == true){
             return array('code' => 2, 'message'=>'Khách hàng đã tồn tại vui lòng nhập tên khác');
+        }else if(empty($name)){
+            return array('code' => 2, 'message'=>'Khách hàng chưa nhập tên');
+        }else if(empty($email)){
+            return array('code' => 2, 'message'=>'Khách hàng chưa nhập email');
+        }else if(empty($sdt)){
+            return array('code' => 2, 'message'=>'Khách hàng chưa nhập số điện thoại');
+        }else if(empty($diachi)){
+            return array('code' => 2, 'message'=>'Khách hàng chưa nhập địa chỉ');
+        }else if(empty($gender)){
+            return array('code' => 2, 'message'=>'Khách hàng chưa nhập chọn giới tính');
+        }else if(empty($username)){
+            return array('code' => 2, 'message'=>'Khách hàng chưa nhập username');
+        }else if(empty($pwd)){
+            return array('code' => 2, 'message'=>'Khách hàng chưa nhập password');
+        }else if(empty($image)){
+            return array('code' => 2, 'message'=>'Khách hàng chưa có hình đại diện');
         }
+        $hash = password_hash($pwd, PASSWORD_DEFAULT);  
         $conn = open_database();
-        $sql = "INSERT INTO khachhang (name, email, sdt, diachi, gender, username, password, image) VALUES(?,?,?,?,?,?,?,?)";
+        $sql = "INSERT INTO user (name, email, sdt, diachi, gender, username, password, image, capBac) VALUES(?,?,?,?,?,?,?,?, ?)";
         $stmt = $conn->prepare($sql);
-        $stmt->bind_param('ssisssss', $name, $email, $sdt, $diachi, $gender, $username, $pwd, $image);
+        $stmt->bind_param('ssissssss', $name, $email, $sdt, $diachi, $gender, $username, $hash, $image, $capBac);
 
         if(!$stmt->execute()){
             return array('code' => 1, 'message' => error());
@@ -328,14 +321,16 @@
         return array('code' => 0, 'message' => 'Đăng ký thành công');
     }
 
-    function add_new_staff($name, $username, $pwd, $image){
+    function add_new_staff($name, $email, $sdt, $diachi, $gender, $username, $pwd, $image){
         if(check_staff_exists($username) == true){
             return array('code' => 2, 'message'=>'Nhân viên đã tồn tại vui lòng nhập tên khác');
         }
+        $hash = password_hash($pwd, PASSWORD_DEFAULT);
         $conn = open_database();
-        $sql = "INSERT INTO nhanvien (name, username, password, image) VALUES(?,?,?,?)";
+        $capBac = "nhanvien";
+        $sql = "INSERT INTO user (name, email, sdt, diachi, gender, username, password, image, capBac) VALUES(?,?,?,?,?,?,?,?, ?)";
         $stmt = $conn->prepare($sql);
-        $stmt->bind_param('ssss', $name, $username, $pwd, $image);
+        $stmt->bind_param('ssissssss', $name, $email, $sdt, $diachi, $gender, $username, $hash, $image, $capBac);
 
         if(!$stmt->execute()){
             return array('code' => 1, 'message' => error());
@@ -345,9 +340,10 @@
 
     function delete_khachhang($id){
         $conn = open_database();
-        $sql = "DELETE FROM khachhang WHERE id = ?";
+        $capBac = "khachhang";
+        $sql = "DELETE FROM user WHERE id = ? and capBac = ?";
         $stmt = $conn->prepare($sql);
-        $stmt->bind_param('i', $id);
+        $stmt->bind_param('is', $id, $capBac);
 
         if(!$stmt->execute()){
             return array('code' => 1, 'message' => error());
@@ -357,9 +353,10 @@
 
     function delete_NV($id){
         $conn = open_database();
-        $sql = "DELETE FROM nhanvien WHERE id = ?";
+        $capBac = "nhanvien";
+        $sql = "DELETE FROM user WHERE id = ? and capBac = ?";
         $stmt = $conn->prepare($sql);
-        $stmt->bind_param('i', $id);
+        $stmt->bind_param('is', $id, $capBac);
 
         if(!$stmt->execute()){
             return array('code' => 1, 'message' => error());
@@ -369,9 +366,10 @@
 
     function update_khachhang($id, $name, $password){
         $conn = open_database();
-        $sql = "update khachhang set name = ?, password = ? where id = ?";
+        $capBac = "khachhang";
+        $sql = "update user set name = ?, password = ? where id = ? and capBac = ?";
         $stmt = $conn->prepare($sql);
-        $stmt->bind_param('ssi', $name, $password, $id);
+        $stmt->bind_param('ssis', $name, $password, $id, $capBac);
 
         if(!$stmt->execute()){
             return  array('code'=>1, 'Can not query command');
@@ -384,9 +382,10 @@
 
     function update_staff($id, $name, $password){
         $conn = open_database();
-        $sql = "update nhanvien set name = ?, password = ? where id = ?";
+        $capBac = "nhanvien";
+        $sql = "update user set name = ?, password = ? where id = ? and capBac = ?";
         $stmt = $conn->prepare($sql);
-        $stmt->bind_param('ssi', $name, $password, $id);
+        $stmt->bind_param('ssis', $name, $password, $id, $capBac);
 
         if(!$stmt->execute()){
             return  array('code'=>1, 'Can not query command');
@@ -394,7 +393,7 @@
         if($stmt->affected_rows == 0){
             return array('code'=>3, 'message'=>'column is not exists');
         }
-        return array('code'=>0, 'message'=>'Sửa khách hàng thành công');
+        return array('code'=>0, 'message'=>'Sửa nhân viên thành công');
     }
 
     function get_chitiet_san($tenSan){
@@ -487,11 +486,11 @@
         return $price.$symbol;
     }
 
-    function delete_san_gio_hang($maSan){
+    function delete_san_gio_hang($maSan, $curDate, $username){
         $conn = open_database();
-        $sql = "delete from giohang where maSan = ?";
+        $sql = "delete from giohang where maSan = ? and ngayLap = ? and maKH = ?";
         $stmt = $conn->prepare($sql);
-        $stmt->bind_param("s", $maSan);
+        $stmt->bind_param("sss", $maSan, $curDate, $username);
 
         if(!$stmt->execute()){
             return array('code'=>1, 'message'=>'cannot execute the command');
@@ -499,11 +498,11 @@
         return array('code'=>0, 'message'=>'Xoá sân trong giỏ hàng thành công');
     }
 
-    function delete_nuoc_giohang($maDrink){
+    function delete_nuoc_giohang($maDrink, $curDate, $username){
         $conn = open_database();
-        $sql = "delete from giohangdrink where maDrink = ?";
+        $sql = "delete from giohangdrink where maDrink = ? and maKH = ? and ngayLap = ?";
         $stmt = $conn->prepare($sql);
-        $stmt->bind_param("s", $maDrink);
+        $stmt->bind_param("sss", $maDrink, $username, $curDate);
 
         if(!$stmt->execute()){
             return array('code'=>1, 'message'=>'cannot execute the command');
@@ -511,7 +510,6 @@
         return array('code'=>0, 'message'=>'Xoá nước trong giỏ hàng thành công');
     }
     
-
     function get_drink(){
         $conn = open_database();
         $sql = "select * from drink";
@@ -532,11 +530,11 @@
         return array('code' => 0, 'message' =>'', 'data' => $data);
     }
 
-    function add_drink_into_giohang($maDrink, $maKH, $SL){
+    function add_drink_into_giohang($maDrink, $maKH, $SL, $curDate){
         $conn = open_database();
-        $sql = "INSERT INTO giohangdrink (maDrink, maKH, soluong) values(?, ?, ?)";
+        $sql = "INSERT INTO giohangdrink (maDrink, maKH, soluong, ngayLap) values(?, ?, ?, ?)";
         $stmt = $conn->prepare($sql);
-        $stmt->bind_param('ssi', $maDrink, $maKH, $SL);
+        $stmt->bind_param('ssis', $maDrink, $maKH, $SL, $curDate);
 
         if(!$stmt->execute()){
             return array('code' => 1, 'message' =>'Can not execute command');
@@ -613,11 +611,11 @@
         }
     }
 
-    function update_drink_giohang($maKH,$maDrink,$SL){
+    function update_drink_giohang($maKH,$maDrink,$SL,$curDate){
         $conn = open_database();
-        $sql = "update giohangdrink set soluong = soluong + ? where maKH = ? and maDrink = ?";
+        $sql = "update giohangdrink set soluong = soluong + ? where maKH = ? and maDrink = ? and ngayLap = ?";
         $stmt = $conn->prepare($sql);
-        $stmt->bind_param('iss', $SL, $maKH, $maDrink);
+        $stmt->bind_param('isss', $SL, $maKH, $maDrink, $curDate);
 
         if(!$stmt->execute()){
             return array('code' => 1, 'message' =>'cannot execute command');
@@ -719,12 +717,6 @@
             return array('code' => 1, 'message' =>'cannot execute command');
         }
         return array('code'=>0, 'message'=>'Đã gửi yêu cầu thanh toán');
-    }
-
-    function get_hoa_don($maKH){
-        $allSan = get_gio_hang_tam($maKH);
-        $allDrink = get_drink_giohang_drink_tam($maKH);
-        return array('code' => 0, 'message' =>'', 'dataSan'=>$allSan['data'], 'dataDrink'=>$allDrink['data']);
     }
 
     function xoa_all_dat_san($maKH){
@@ -875,9 +867,10 @@
 
     function get_all_account_nhanvien(){
         $conn = open_database();
-        $sql = "select * from nhanvien";
+        $capBac = "nhanvien";
+        $sql = "select * from user where capBac = ?";
         $stmt = $conn->prepare($sql);
-        
+        $stmt->bind_param('s', $capBac);
         if(!$stmt->execute()){
             return array('code' => 1, 'message' =>'cannot execute command');
         }
@@ -935,20 +928,20 @@
 
     function check_password($pwd, $username){
         $conn = open_database();
-        $sql = "SELECT * FROM khachhang WHERE username = ?";
+        $sql = "SELECT * FROM user WHERE username = ?";
         $stmt = $conn->prepare($sql);
         $stmt->bind_param('s', $username);
         $stmt->execute();
         $result = $stmt->get_result();
         $data = $result->fetch_assoc();
-        if($pwd == $data['password']){
-            return true;
-        }else{
-            return false;
+        $hash_password = $data['password'];
+        if(!password_verify($pwd, $hash_password)){
+            return false; // password không khớp
         }
+        return true;
     }
 
-    function change_password_khachhang($oldpwd, $newpwd, $cpwd, $username){
+    function change_password($oldpwd, $newpwd, $cpwd, $username){
         $conn = open_database();
 
         if($oldpwd == "" || $newpwd == "" || $cpwd == ""){ 
@@ -958,10 +951,10 @@
         }else if(check_password($oldpwd, $username) === false){
             return array('code' =>1,'message' =>'Mật khẩu cũ không trùng');
         }
-
-        $sql = "UPDATE khachhang SET password = ? WHERE username = ?";
+        $hash = password_hash($newpwd, PASSWORD_DEFAULT);
+        $sql = "UPDATE user SET password = ? WHERE username = ?";
         $stmt = $conn->prepare($sql);
-        $stmt->bind_param('ss', $newpwd, $username);
+        $stmt->bind_param('ss', $hash, $username);
         if(!$stmt->execute()){
             return array('code' => 1, 'message' =>'cannot execute command');
         }
@@ -970,12 +963,107 @@
 
     function change_info_khachhang($name, $address, $gender, $username){
         $conn = open_database();
-        $sql = "update khachhang set name = ?, diachi = ?, gender = ? where username = ?";
+        $capBac = "khachhang";
+        $sql = "update user set name = ?, diachi = ?, gender = ? where username = ? and capBac = ?";
         $stmt = $conn->prepare($sql);
-        $stmt->bind_param('ssss', $name, $address, $gender, $username);
+        $stmt->bind_param('sssss', $name, $address, $gender, $username, $capBac);
         if(!$stmt->execute()){
             return array('code' => 1, 'message' =>error());
         }
         return array('code' => 0, 'message' =>'Đổi thông tin thành công');
+    }
+
+    function get_info_user($username){
+        $conn = open_database();
+        $sql = "select * from user where username = ?";
+        $stmt = $conn->prepare($sql);
+        $stmt->bind_param('s', $username);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        $data = $result->fetch_assoc();
+        return array('code' => 0, 'message' =>'', 'data' => $data);
+    }
+
+    function get_maSan($maDon){
+        $conn = open_database();
+        $sql = "select * from tamgiohangsan where maDon = ?";
+        $stmt = $conn->prepare($sql);
+        $stmt->bind_param('s', $maDon);
+
+        if(!$stmt->execute()){
+            return array('code' => 1, 'message' =>'Can not execute command');
+        }
+        $result = $stmt->get_result();
+        while ($row = $result->fetch_assoc()){
+            update_choose_san($row['maSan']);
+        }
+    }
+
+    function update_choose_san($maSan){
+        $conn = open_database();
+        $sql = "update sanbong set SL = SL + 1 where maSan = ?";
+        $stmt = $conn->prepare($sql);
+        $stmt->bind_param('s', $maSan);
+
+        if(!$stmt->execute()){
+            return array('code' => 1, 'message' => 'Can not execute command');
+        }
+        return array('code'=>0, 'message'=>'Update successfully');
+    }
+
+    function thong_ke_san_dat_nhieu(){
+        $conn = open_database();
+        $sql = "select * from sanbong order by SL DESC";
+        $stmt = $conn->prepare($sql);
+        if(!$stmt->execute()){
+            return array('code' => 1, 'message' =>'cannot execute command');
+        }
+        $data = array();
+        $result = $stmt->get_result();
+        while($row = $result->fetch_assoc()){
+            $data[] = $row;
+        }
+        return array('code' => 0, 'message' => '', 'data' => $data);
+    }
+
+    function check_time($gioDat1, $thoigian1, $gioDat2, $thoigian2){
+        $gio2 = minutes($gioDat2);
+        $gio1 = minutes($gioDat1);
+        $tong1 = $gio1 + $thoigian1;
+        $tong2 = $gio2 + $thoigian2;
+        if(($gio2 >= $gio1 && $tong2 <= $tong1)){
+            return false;
+        }
+        return true;
+    }
+    
+    function minutes($time){
+        $time = explode(':', $time);
+        return ($time[0]*60) + ($time[1]);
+    }
+
+    function check_date_dat_san($maSan, $ngayDat, $gioDat, $thoigian){
+        $conn = open_database();
+        $sql = "select * from tamgiohangsan where maSan = ? and ngaydat = ?";
+        $stmt = $conn->prepare($sql);
+        $stmt->bind_param('ss', $maSan, $ngayDat);
+
+        if(!$stmt->execute()){
+            return array('code' => 1, 'message' =>'cannot execute command');
+        }
+
+        $result = $stmt->get_result();
+        $data = array();
+        while($row = $result->fetch_assoc()) {
+            $data[] = $row;            
+        }
+
+        foreach($data as $a){
+            if(check_time($a['giodat'], $a['thoigian'], $gioDat, $thoigian) === false) {
+                return array('code' => 1, 'message' =>'Thời gian bạn đặt đã có người đặt rồi vui lòng chọn thời gian khác');
+            }else{
+                return array('code' => 0, 'message' =>'');
+            }
+        }
     }
 ?>
